@@ -18,7 +18,7 @@ public class Pessoa {
     /**
      * Atributo para guardar a assinatura digital da pessoa (jurídica ou física).
      */
-    private  String assinatura_digital;
+    private String assinatura_digital;
     
     /**
      * Método construtor que inicializa a instância de uma pessoa com nome e assinatura digital.

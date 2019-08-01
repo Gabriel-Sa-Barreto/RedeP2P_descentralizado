@@ -9,7 +9,7 @@ package model;
  *
  * @author gabriel e Samuel
  */
-public class Pessoa_Juridica extends Pessoa{
+public class PessoaJuridica extends Pessoa{
     
     /**
      * Atributo que armazena o CNPJ de uma pessoa.
@@ -23,7 +23,7 @@ public class Pessoa_Juridica extends Pessoa{
      * @param nome
      * @param assinatura_digital 
      */
-    public Pessoa_Juridica(String CNPJ, String nome, String assinatura_digital) {
+    public PessoaJuridica(String CNPJ, String nome, String assinatura_digital) {
         super(nome, assinatura_digital);
         this.CNPJ = CNPJ;
     }

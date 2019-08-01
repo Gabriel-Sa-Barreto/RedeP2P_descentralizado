@@ -9,7 +9,7 @@ package model;
  *
  * @author gabriel e Samuel
  */
-public class Pessoa_Fisica extends Pessoa{
+public class PessoaFisica extends Pessoa{
     
     /**
      * Atributo que armazena o CPF de uma pessoa.
@@ -23,7 +23,7 @@ public class Pessoa_Fisica extends Pessoa{
      * @param nome
      * @param assinatura_digital 
      */
-    public Pessoa_Fisica(String CPF, String nome, String assinatura_digital) {
+    public PessoaFisica(String CPF, String nome, String assinatura_digital) {
         super(nome, assinatura_digital);
         this.CPF = CPF;
     }
