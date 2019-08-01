@@ -7,4 +7,5 @@ Esta aplicação está sendo construída na linguagem Java.
 Componentes do projeto:
 Gabriel Sá Barreto Alves
 Samuel Vitorio Lima
-*Bacharelando em Engenharia da Computação pela Universidade Estadual de Feira de Santana (BA)
+
+Bacharelando em Engenharia da Computação pela Universidade Estadual de Feira de Santana (BA)
