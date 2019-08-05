@@ -15,7 +15,7 @@ public class PessoaFisica extends Pessoa{
      * Atributo que armazena o CPF de uma pessoa.
      */
     private String CPF; 
-
+        
     /**
      * Método construtor que inicializa uma tipo de pessoa física informando CPF, nome e assinatura digital
      * pertencente a ela.
@@ -43,5 +43,4 @@ public class PessoaFisica extends Pessoa{
     public void setCPF(String CPF) {
         this.CPF = CPF;
     }
-   
 }

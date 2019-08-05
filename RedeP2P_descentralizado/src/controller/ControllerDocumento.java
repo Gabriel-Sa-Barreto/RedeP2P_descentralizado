@@ -5,10 +5,30 @@
  */
 package controller;
 
+import java.util.List;
+import model.Documento;
+
 /**
  *
- * @author lablenda2
+ * @author Gabriel Sá e Samuel Vitorio
  */
 public class ControllerDocumento {
+    
+    
+    public int salvarDocumento(){
+        
+        
+        
+        return 1;
+    }
+    
+    
+    public String buscarDocumento(){
+    
+    
+        return null;
+    }
+    
+    
     
 }

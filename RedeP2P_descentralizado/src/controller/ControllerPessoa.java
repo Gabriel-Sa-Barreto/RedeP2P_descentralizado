@@ -8,7 +8,6 @@ package controller;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import model.Pessoa;
 import model.PessoaFisica;
 import model.PessoaJuridica;
 
@@ -20,19 +19,19 @@ public class ControllerPessoa {
     /**
      * Lista que armazena todas as pessoas físicas já cadastradas neste cartório.
      */
-    private static List<Pessoa> pessoasFisicas;
+    private static List<PessoaFisica> pessoasFisicas;
     
     /**
      * Lista que armazena todas as pessoas jurídicas já cadastradas neste cartório.
      */
-    private static List<Pessoa> pessoasJuridicas;
+    private static List<PessoaJuridica> pessoasJuridicas;
 
     /**
      * Construtor que inicializa todos os atributos da classe para possíveis operações.
      */
     public ControllerPessoa() {
-        pessoasFisicas = new ArrayList<Pessoa>();
-        pessoasJuridicas = new ArrayList<Pessoa>();
+        pessoasFisicas = new ArrayList<PessoaFisica>();
+        pessoasJuridicas = new ArrayList<PessoaJuridica>();
     }
     
     /**
@@ -74,4 +73,81 @@ public class ControllerPessoa {
         //caso o cadastro seja feito com sucesso.
         return 1;
     }    
+    
+    /**
+     * Método que retorna uma pessoa jurídica que está cadastrada no sistema.
+     * @param cnpj
+     * @return null ou a pessoa encontrada
+     */
+    public PessoaJuridica busca_pessoaJuridica(String cnpj){
+        try{
+            PessoaJuridica p = null;
+            //realiza busca de pessoa
+            for(Iterator<PessoaJuridica> it = pessoasJuridicas.iterator(); it.hasNext();){
+                p = it.next();
+                if(p.getCNPJ().equals(cnpj)){
+                    return p;
+                }
+            } 
+        }catch(Exception e){
+            return null;
+        }
+        return null;
+    }   
+    
+  
+    /**
+     * Método que busca uma pessoa física que está cadastrada no sistema.
+     * @param CPF
+     * @return null ou a pessoa encontrada
+     */
+    public PessoaFisica busca_pessoaFisica(String assinatura){
+        try{
+            PessoaFisica p = null;
+            //realiza busca de pessoa
+            for(Iterator<PessoaFisica> it = pessoasFisicas.iterator(); it.hasNext();){
+                p = it.next();
+                if(p.getAssinatura_digital().equals(assinatura)){
+                    return p;
+                }
+            } 
+        }catch(Exception e){
+            return null;
+        }
+        return null;
+    }   
+    
+    
+    /**
+     * Método que verifica se uma pessoa está cadastrada no sistema.
+     * @param assinatura
+     * @param opcao
+     * @return 1 (sucesso) ou 0 (falha)
+     */
+    public int existePessoa(String assinatura, int opcao){
+        try{
+            if(opcao == 0){ //busca de pessoa física
+                PessoaFisica p = null;
+                for(Iterator<PessoaFisica> it = pessoasFisicas.iterator(); it.hasNext();){
+                    p = it.next();
+                    if(p.getAssinatura_digital().compareTo(assinatura) == 0){
+                        return 1;
+                    }
+                } 
+            }
+            
+            if(opcao == 1){ //busca de pessoa jurídica
+                PessoaJuridica p = null;
+                for(Iterator<PessoaJuridica> it = pessoasJuridicas.iterator(); it.hasNext();){
+                    p = it.next();
+                    if(p.getAssinatura_digital().compareTo(assinatura) == 0){
+                        return 1;
+                    }
+                } 
+            }
+        }catch(Exception e){
+            return 0;
+        }
+        return 0;
+    }
 }
