@@ -5,6 +5,11 @@
  */
 package view;
 
+import java.awt.CardLayout;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author gabriel
@@ -27,25 +32,139 @@ public class TelaUsuario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        telaUser = new javax.swing.JPanel();
+        telaInicial = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        UploadFiles = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        OpenFile = new javax.swing.JButton();
+        chooseFile = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        DownloadFiles = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         optionsFiles = new javax.swing.JMenu();
+        uploadFiles = new javax.swing.JMenuItem();
         downloadFiles = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
         logout = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Sistema de Cartórios");
+        setResizable(false);
+
+        telaUser.setLayout(new java.awt.CardLayout());
+
+        jLabel2.setFont(new java.awt.Font("Abyssinica SIL", 3, 36)); // NOI18N
+        jLabel2.setText("Sistema de Cartórios");
+
+        jLabel3.setFont(new java.awt.Font("Abyssinica SIL", 3, 24)); // NOI18N
+        jLabel3.setText("Para gerência de arquivos");
+
+        javax.swing.GroupLayout telaInicialLayout = new javax.swing.GroupLayout(telaInicial);
+        telaInicial.setLayout(telaInicialLayout);
+        telaInicialLayout.setHorizontalGroup(
+            telaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaInicialLayout.createSequentialGroup()
+                .addGroup(telaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(telaInicialLayout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addComponent(jLabel3))
+                    .addGroup(telaInicialLayout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(jLabel2)))
+                .addContainerGap(75, Short.MAX_VALUE))
+        );
+        telaInicialLayout.setVerticalGroup(
+            telaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaInicialLayout.createSequentialGroup()
+                .addGap(77, 77, 77)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addContainerGap(209, Short.MAX_VALUE))
+        );
+
+        telaUser.add(telaInicial, "card4");
+
+        jLabel1.setFont(new java.awt.Font("Abyssinica SIL", 3, 15)); // NOI18N
+        jLabel1.setText("Escolha um arquivo: ");
+
+        OpenFile.setFont(new java.awt.Font("Abyssinica SIL", 3, 15)); // NOI18N
+        OpenFile.setText("Abrir arquivo");
+        OpenFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OpenFileActionPerformed(evt);
+            }
+        });
+
+        jButton2.setFont(new java.awt.Font("Abyssinica SIL", 3, 15)); // NOI18N
+        jButton2.setText("Upload");
+
+        javax.swing.GroupLayout UploadFilesLayout = new javax.swing.GroupLayout(UploadFiles);
+        UploadFiles.setLayout(UploadFilesLayout);
+        UploadFilesLayout.setHorizontalGroup(
+            UploadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(UploadFilesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(UploadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(UploadFilesLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(3, 3, 3)
+                        .addComponent(OpenFile))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(65, Short.MAX_VALUE))
+        );
+        UploadFilesLayout.setVerticalGroup(
+            UploadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(UploadFilesLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(UploadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(OpenFile))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addContainerGap(222, Short.MAX_VALUE))
+        );
+
+        telaUser.add(UploadFiles, "Upload");
+
+        javax.swing.GroupLayout DownloadFilesLayout = new javax.swing.GroupLayout(DownloadFiles);
+        DownloadFiles.setLayout(DownloadFilesLayout);
+        DownloadFilesLayout.setHorizontalGroup(
+            DownloadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 516, Short.MAX_VALUE)
+        );
+        DownloadFilesLayout.setVerticalGroup(
+            DownloadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 359, Short.MAX_VALUE)
+        );
+
+        telaUser.add(DownloadFiles, "Download");
 
         optionsFiles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/book_open.png"))); // NOI18N
         optionsFiles.setText("Arquivos");
 
-        downloadFiles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/database_refresh.png"))); // NOI18N
-        downloadFiles.setText("Upload");
-        optionsFiles.add(downloadFiles);
+        uploadFiles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/database_refresh.png"))); // NOI18N
+        uploadFiles.setText("Upload");
+        uploadFiles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadFilesActionPerformed(evt);
+            }
+        });
+        optionsFiles.add(uploadFiles);
 
-        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/table_edit.png"))); // NOI18N
-        jMenuItem3.setText("Download");
-        optionsFiles.add(jMenuItem3);
+        downloadFiles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/table_edit.png"))); // NOI18N
+        downloadFiles.setText("Download");
+        downloadFiles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downloadFilesActionPerformed(evt);
+            }
+        });
+        optionsFiles.add(downloadFiles);
 
         jMenuBar1.add(optionsFiles);
 
@@ -68,11 +187,11 @@ public class TelaUsuario extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 516, Short.MAX_VALUE)
+            .addComponent(telaUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 379, Short.MAX_VALUE)
+            .addComponent(telaUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -83,6 +202,41 @@ public class TelaUsuario extends javax.swing.JFrame {
         this.setVisible(false); //fecha a tela do usuário
         Cliente.showTela(); //volta à tela inicial de login
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    /**
+     * Método para abrir a tela de upload de arquivos.
+     * @param evt 
+     */
+    private void uploadFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadFilesActionPerformed
+        CardLayout cl = (CardLayout) telaUser.getLayout();
+        cl.show(telaUser, "Upload");
+        chooseFile.setText(null); //limpa o campo do caminho do arquivo.
+    }//GEN-LAST:event_uploadFilesActionPerformed
+
+    /**
+     * Método de exibição da tela de download de arquivos.
+     * @param evt 
+     */
+    private void downloadFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadFilesActionPerformed
+        CardLayout cl = (CardLayout) telaUser.getLayout();
+        cl.show(telaUser, "Download");
+    }//GEN-LAST:event_downloadFilesActionPerformed
+
+    /**
+     * Método de exibição de tela para escolha de arquivo com o intuito de realizar um upload.
+     * @param evt 
+     */
+    private void OpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenFileActionPerformed
+        JFileChooser  fc = new JFileChooser();
+        FileFilter filter = new FileNameExtensionFilter("files", "pdf", "txt", "png");
+        fc.setFileFilter(filter);
+        fc.setCurrentDirectory(new java.io.File("../"));
+        fc.setDialogTitle("Choose a file");
+        if(fc.showOpenDialog(OpenFile) == JFileChooser.APPROVE_OPTION){
+            //escreve o caminho do arquivo no campo de texto.
+            chooseFile.setText( fc.getSelectedFile().getAbsolutePath() );
+        }
+    }//GEN-LAST:event_OpenFileActionPerformed
 
     /**
      * Método para mostrar a tela inicial para um usuário.
@@ -120,11 +274,21 @@ public class TelaUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel DownloadFiles;
+    private javax.swing.JButton OpenFile;
+    private javax.swing.JPanel UploadFiles;
+    private javax.swing.JTextField chooseFile;
     private javax.swing.JMenuItem downloadFiles;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenu logout;
     private javax.swing.JMenu optionsFiles;
+    private javax.swing.JPanel telaInicial;
+    private javax.swing.JPanel telaUser;
+    private javax.swing.JMenuItem uploadFiles;
     // End of variables declaration//GEN-END:variables
 }
