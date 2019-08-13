@@ -5,10 +5,20 @@
  */
 package view;
 
+import controller.ControllerCartorio;
+import controller.ControllerDocumento;
+import controller.ControllerPessoa;
+import controller.ControllerRede;
 import java.awt.CardLayout;
+import java.io.IOException;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import model.ValidarCNPJ;
+import model.ValidarCPF;
+import serverAndClient.Client;
+import serverAndClient.Servidor;
 
 /**
  *
@@ -17,10 +27,26 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class TelaUsuario extends javax.swing.JFrame {
 
     /**
+     * Atributo para ter acesso a todas as ações referentes a pessoa.
+     */
+    private ControllerPessoa controllerPessoa;
+    
+    /**
+     * Atributo responsável pelo envio de dados.
+     */
+    private ControllerRede rede;
+    
+    private ControllerCartorio control=  new ControllerCartorio();
+    
+    /**
      * Creates new form TelaUsuario
      */
     public TelaUsuario() {
         initComponents();
+        setMenuPrincipal(false);
+        controllerPessoa = new ControllerPessoa();
+        rede = new ControllerRede();
+        conectarComCartorio(); //método que se conecta com todos os cartórios.
     }
 
     /**
@@ -33,6 +59,31 @@ public class TelaUsuario extends javax.swing.JFrame {
     private void initComponents() {
 
         telaUser = new javax.swing.JPanel();
+        telaLogin = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        ass_digitalPessoa = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        senhaPessoa = new javax.swing.JPasswordField();
+        buttonAcessar = new javax.swing.JButton();
+        telaCadastroPessoa = new javax.swing.JButton();
+        telaCadastro = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        nomePessoa = new javax.swing.JTextField();
+        CpfPessoa = new javax.swing.JTextField();
+        assDigital = new javax.swing.JTextField();
+        cnpjPessoa = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        cadPessoaFisica = new javax.swing.JButton();
+        cadPessoaJuridica = new javax.swing.JButton();
+        voltarLogin = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
+        senha = new javax.swing.JPasswordField();
         telaInicial = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -40,20 +91,223 @@ public class TelaUsuario extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         OpenFile = new javax.swing.JButton();
         chooseFile = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        uploadFile = new javax.swing.JButton();
         DownloadFiles = new javax.swing.JPanel();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        menuPrincipal = new javax.swing.JMenuBar();
         optionsFiles = new javax.swing.JMenu();
         uploadFiles = new javax.swing.JMenuItem();
         downloadFiles = new javax.swing.JMenuItem();
         logout = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        logoutUser = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Cartórios");
         setResizable(false);
 
         telaUser.setLayout(new java.awt.CardLayout());
+
+        jLabel4.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
+        jLabel4.setText("Login");
+
+        ass_digitalPessoa.setText(" ");
+
+        jLabel5.setText("Assinatura Digital");
+
+        jLabel6.setText("Senha");
+
+        buttonAcessar.setFont(new java.awt.Font("Abyssinica SIL", 3, 15)); // NOI18N
+        buttonAcessar.setText("Acessar");
+        buttonAcessar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAcessarActionPerformed(evt);
+            }
+        });
+
+        telaCadastroPessoa.setFont(new java.awt.Font("Abyssinica SIL", 3, 15)); // NOI18N
+        telaCadastroPessoa.setText("Novo Cadastro");
+        telaCadastroPessoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                telaCadastroPessoaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout telaLoginLayout = new javax.swing.GroupLayout(telaLogin);
+        telaLogin.setLayout(telaLoginLayout);
+        telaLoginLayout.setHorizontalGroup(
+            telaLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaLoginLayout.createSequentialGroup()
+                .addGroup(telaLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(telaLoginLayout.createSequentialGroup()
+                        .addGap(92, 92, 92)
+                        .addGroup(telaLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addGroup(telaLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(senhaPessoa, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(ass_digitalPessoa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, telaLoginLayout.createSequentialGroup()
+                                    .addComponent(buttonAcessar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(telaCadastroPessoa)))))
+                    .addGroup(telaLoginLayout.createSequentialGroup()
+                        .addGap(216, 216, 216)
+                        .addComponent(jLabel4)))
+                .addContainerGap(120, Short.MAX_VALUE))
+        );
+        telaLoginLayout.setVerticalGroup(
+            telaLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaLoginLayout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ass_digitalPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(senhaPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(telaLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonAcessar)
+                    .addComponent(telaCadastroPessoa))
+                .addContainerGap(145, Short.MAX_VALUE))
+        );
+
+        telaUser.add(telaLogin, "telaLogin");
+
+        jLabel7.setFont(new java.awt.Font("Abyssinica SIL", 3, 18)); // NOI18N
+        jLabel7.setText("Cadastro de Pessoas");
+
+        jLabel8.setFont(new java.awt.Font("Ubuntu", 3, 18)); // NOI18N
+        jLabel8.setText("Pessoa Física:");
+
+        jLabel9.setFont(new java.awt.Font("Ubuntu", 3, 18)); // NOI18N
+        jLabel9.setText("Pessoa Jurídica:");
+
+        jLabel10.setFont(new java.awt.Font("Ubuntu", 3, 15)); // NOI18N
+        jLabel10.setText("Nome:");
+
+        jLabel11.setFont(new java.awt.Font("Ubuntu", 3, 15)); // NOI18N
+        jLabel11.setText("CPF:");
+
+        jLabel12.setFont(new java.awt.Font("Ubuntu", 3, 15)); // NOI18N
+        jLabel12.setText("Ass. Digital:");
+
+        jLabel14.setFont(new java.awt.Font("Ubuntu", 3, 15)); // NOI18N
+        jLabel14.setText("CNPJ:");
+
+        cadPessoaFisica.setText("Cadastrar Pessoa Física");
+        cadPessoaFisica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cadPessoaFisicaActionPerformed(evt);
+            }
+        });
+
+        cadPessoaJuridica.setText("Cadastrar Pessoa Jurídica");
+        cadPessoaJuridica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cadPessoaJuridicaActionPerformed(evt);
+            }
+        });
+
+        voltarLogin.setFont(new java.awt.Font("Abyssinica SIL", 3, 15)); // NOI18N
+        voltarLogin.setText("Voltar");
+        voltarLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                voltarLoginActionPerformed(evt);
+            }
+        });
+
+        jLabel16.setFont(new java.awt.Font("Abyssinica SIL", 3, 15)); // NOI18N
+        jLabel16.setText("Senha:");
+
+        javax.swing.GroupLayout telaCadastroLayout = new javax.swing.GroupLayout(telaCadastro);
+        telaCadastro.setLayout(telaCadastroLayout);
+        telaCadastroLayout.setHorizontalGroup(
+            telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaCadastroLayout.createSequentialGroup()
+                .addGap(162, 162, 162)
+                .addComponent(jLabel7)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(telaCadastroLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, telaCadastroLayout.createSequentialGroup()
+                        .addGroup(telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(telaCadastroLayout.createSequentialGroup()
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(44, 44, 44)
+                                .addComponent(CpfPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(telaCadastroLayout.createSequentialGroup()
+                                    .addGroup(telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel16))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(nomePessoa, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                                        .addComponent(assDigital, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                                        .addComponent(senha)))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, telaCadastroLayout.createSequentialGroup()
+                                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                                    .addComponent(cnpjPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(18, 18, 18)
+                        .addComponent(voltarLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
+                        .addGap(36, 36, 36))
+                    .addGroup(telaCadastroLayout.createSequentialGroup()
+                        .addGroup(telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addGroup(telaCadastroLayout.createSequentialGroup()
+                                .addComponent(cadPessoaJuridica)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cadPessoaFisica)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        telaCadastroLayout.setVerticalGroup(
+            telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaCadastroLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
+                .addGroup(telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nomePessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10)
+                    .addComponent(voltarLogin))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(assDigital, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel16)
+                    .addComponent(senha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11)
+                    .addComponent(CpfPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(cnpjPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGroup(telaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(telaCadastroLayout.createSequentialGroup()
+                        .addComponent(cadPessoaJuridica)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, telaCadastroLayout.createSequentialGroup()
+                        .addComponent(cadPessoaFisica)
+                        .addGap(29, 29, 29))))
+        );
+
+        telaUser.add(telaCadastro, "telaCadastro");
 
         jLabel2.setFont(new java.awt.Font("Abyssinica SIL", 3, 36)); // NOI18N
         jLabel2.setText("Sistema de Cartórios");
@@ -73,7 +327,7 @@ public class TelaUsuario extends javax.swing.JFrame {
                     .addGroup(telaInicialLayout.createSequentialGroup()
                         .addGap(63, 63, 63)
                         .addComponent(jLabel2)))
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
         telaInicialLayout.setVerticalGroup(
             telaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -82,10 +336,10 @@ public class TelaUsuario extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addContainerGap(242, Short.MAX_VALUE))
         );
 
-        telaUser.add(telaInicial, "card4");
+        telaUser.add(telaInicial, "telaInicial");
 
         jLabel1.setFont(new java.awt.Font("Abyssinica SIL", 3, 15)); // NOI18N
         jLabel1.setText("Escolha um arquivo: ");
@@ -98,8 +352,13 @@ public class TelaUsuario extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Abyssinica SIL", 3, 15)); // NOI18N
-        jButton2.setText("Upload");
+        uploadFile.setFont(new java.awt.Font("Abyssinica SIL", 3, 15)); // NOI18N
+        uploadFile.setText("Upload");
+        uploadFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadFileActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout UploadFilesLayout = new javax.swing.GroupLayout(UploadFiles);
         UploadFiles.setLayout(UploadFilesLayout);
@@ -113,8 +372,8 @@ public class TelaUsuario extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(3, 3, 3)
                         .addComponent(OpenFile))
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(65, Short.MAX_VALUE))
+                    .addComponent(uploadFile, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
         UploadFilesLayout.setVerticalGroup(
             UploadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,8 +385,8 @@ public class TelaUsuario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addComponent(uploadFile)
+                .addContainerGap(277, Short.MAX_VALUE))
         );
 
         telaUser.add(UploadFiles, "Upload");
@@ -136,11 +395,11 @@ public class TelaUsuario extends javax.swing.JFrame {
         DownloadFiles.setLayout(DownloadFilesLayout);
         DownloadFilesLayout.setHorizontalGroup(
             DownloadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 516, Short.MAX_VALUE)
+            .addGap(0, 522, Short.MAX_VALUE)
         );
         DownloadFilesLayout.setVerticalGroup(
             DownloadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 359, Short.MAX_VALUE)
+            .addGap(0, 414, Short.MAX_VALUE)
         );
 
         telaUser.add(DownloadFiles, "Download");
@@ -166,22 +425,22 @@ public class TelaUsuario extends javax.swing.JFrame {
         });
         optionsFiles.add(downloadFiles);
 
-        jMenuBar1.add(optionsFiles);
+        menuPrincipal.add(optionsFiles);
 
         logout.setText("Sair");
 
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/door_out.png"))); // NOI18N
-        jMenuItem1.setText("Logout");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        logoutUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/door_out.png"))); // NOI18N
+        logoutUser.setText("Logout");
+        logoutUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                logoutUserActionPerformed(evt);
             }
         });
-        logout.add(jMenuItem1);
+        logout.add(logoutUser);
 
-        jMenuBar1.add(logout);
+        menuPrincipal.add(logout);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menuPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -198,10 +457,9 @@ public class TelaUsuario extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        this.setVisible(false); //fecha a tela do usuário
-        Cliente.showTela(); //volta à tela inicial de login
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void logoutUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutUserActionPerformed
+        JOptionPane.showMessageDialog(null, "Logout feito com sucesso!!");
+    }//GEN-LAST:event_logoutUserActionPerformed
 
     /**
      * Método para abrir a tela de upload de arquivos.
@@ -238,34 +496,146 @@ public class TelaUsuario extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_OpenFileActionPerformed
 
+    private void buttonAcessarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAcessarActionPerformed
+        String ass_digital = ass_digitalPessoa.getText();
+        String senha = new String ( senhaPessoa.getPassword() ).trim(); //retira possíveis espaços incluidos no campo senha
+        String login = ass_digital + ';' + senha;  
+        if(ass_digital.isEmpty() || senha.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Por favor!! Informe todos os campos.");
+        }else{
+            //envia os dados de login.
+            rede.transmitirDadosCartorio(3,control,login);
+            while(!ControllerCartorio.isLoginCartorio()); //espera pela confirmação do login
+            ControllerCartorio.setLoginCartorio(false);
+            JOptionPane.showMessageDialog(null, "Login feito com sucesso!!");
+            this.setMenuPrincipal(true); //ativa o menu principal
+            //exibi a tela inicial
+            CardLayout cl = (CardLayout) telaUser.getLayout(); 
+            cl.show(telaUser, "telaInicial");
+            
+            
+        }
+    }//GEN-LAST:event_buttonAcessarActionPerformed
+
+    private void telaCadastroPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telaCadastroPessoaActionPerformed
+        CardLayout cl = (CardLayout) telaUser.getLayout(); 
+        cl.show(telaUser, "telaCadastro");
+    }//GEN-LAST:event_telaCadastroPessoaActionPerformed
+
     /**
-     * Método para mostrar a tela inicial para um usuário.
+     * Método para o processo de cadastro de pessoa Física. 
+     * @param evt 
      */
-    public void main() {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+    private void cadPessoaFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadPessoaFisicaActionPerformed
+        //Dados de nome, cpf e assinatura Digital de uma pessoa física.
+        String nome = nomePessoa.getText();
+        String cpf  = CpfPessoa.getText();
+        String assDigitalP = assDigital.getText();
+        String senhaP = new String ( senha.getPassword() );
+        String dados = nome + ';' + cpf + ';' + senhaP + ';' + assDigitalP;
+        if(nome.isEmpty() || cpf.isEmpty() || assDigitalP.isEmpty() || senhaP.isEmpty() ){
+            JOptionPane.showMessageDialog(null, "Informe todos dados necessários");
+        }else{
+            //Verifica se o CPF é válido.
+            if(!ValidarCPF.isCPF(cpf)){
+                JOptionPane.showMessageDialog(null, "CPF inválido. Informe os dados corretamente!");
+            } else {
+                //Com o CPF validado, realiza uma busca para ver se alguém já está com aquele CPF cadastrado.
+                if( controllerPessoa.busca_pessoaFisica(cpf) != null ){
+                    JOptionPane.showMessageDialog(null, "Este CPF já está cadastrado no sistema!");
+                }else{
+                    //envia dados de cadastro aos cartórios.
+                    rede.transmitirDadosCartorio(2,control,dados);
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+    }//GEN-LAST:event_cadPessoaFisicaActionPerformed
 
-        /* Create and display the form */
+    /**
+     * Método para o processo de cadastro de pessoa Jurídica.
+     * @param evt 
+     */
+    private void cadPessoaJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadPessoaJuridicaActionPerformed
+         //Dados de nome, cpf e assinatura Digital de uma pessoa física.
+        String nome = nomePessoa.getText();
+        String cnpj  = cnpjPessoa.getText();
+        String assDigitalP = assDigital.getText();
+        String senhaP = new String ( senha.getPassword() );
+        if(nome.isEmpty() || cnpj.isEmpty() || assDigitalP.isEmpty() || senhaP.isEmpty() ){
+            JOptionPane.showMessageDialog(null, "Informe todos dados necessários");
+        }else{
+            //Verifica se o CPF é válido.
+            if(!ValidarCNPJ.isCNPJ(cnpj)){
+                JOptionPane.showMessageDialog(null, "CNPJ inválido. Informe os dados corretamente!");
+            } else {
+                //Com o CPF validado, realiza uma busca para ver se alguém já está com aquele CPF cadastrado.
+                if( controllerPessoa.busca_pessoaJuridica(cnpj) != null ){
+                    JOptionPane.showMessageDialog(null, "Este CNPJ já está cadastrado no sistema!");
+                }else{
+                    //realiza o processo de cadastro.
+                    if( controllerPessoa.cadastrarPessoa_juridica(cnpj, nome,assDigitalP, senhaP) == 1){
+                        JOptionPane.showMessageDialog(null, "Cadastro feito com sucesso!");
+                        JOptionPane.showMessageDialog(null, "Nome: " + nome + " com CNPJ: " + ValidarCNPJ.imprimeCNPJ(cnpj) + " assinatura: " + assDigitalP);
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_cadPessoaJuridicaActionPerformed
+
+    /**
+     * Método que abre a tela de login.
+     * @param evt 
+     */
+    private void voltarLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarLoginActionPerformed
+        CardLayout cl = (CardLayout) telaUser.getLayout(); 
+        cl.show(telaUser, "telaLogin");
+    }//GEN-LAST:event_voltarLoginActionPerformed
+
+    /**
+     * Método para realização de upload de arquivos.
+     * @param evt 
+     */
+    private void uploadFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadFileActionPerformed
+        Client cliente;
+        for(int i = 0 ; i < control.quantCartorio() ; i++){
+            boolean teste = true;
+            while(teste){
+                try {
+                    cliente = new Client(control.busca(i).getIp(),control.busca(i).getPorta());
+                    cliente.executa();
+                    rede.enviarDadoInt(cliente.getCliente(), 1);
+                    ControllerDocumento.sendFile(chooseFile.getText(), cliente.getCliente());
+                    cliente.fecharConexão();
+                    cliente = new Client(control.busca(i).getIp(),control.busca(i).getPorta());
+                    cliente.executa();
+                    teste = false;
+                } catch (IOException ex) {
+                    ex.getMessage();
+                }    
+            }
+        } 
+    }//GEN-LAST:event_uploadFileActionPerformed
+
+    /**
+     * Método para ativar ou desativar o menu principal.
+     * @param option
+     */
+    public void setMenuPrincipal(boolean option){
+        menuPrincipal.setVisible(option);
+    }
+    
+    public void conectarComCartorio(){
+         control.cadastrar(1880,"127.0.0.1");
+         //control.cadastrar(1860,"127.0.0.1");
+    }
+    
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) throws IOException {
+       Servidor servidor = new Servidor(1840); //servidor do cliente  
+       /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new TelaUsuario().setVisible(true);
@@ -274,21 +644,46 @@ public class TelaUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField CpfPessoa;
     private javax.swing.JPanel DownloadFiles;
     private javax.swing.JButton OpenFile;
     private javax.swing.JPanel UploadFiles;
+    private javax.swing.JTextField assDigital;
+    private javax.swing.JTextField ass_digitalPessoa;
+    private javax.swing.JButton buttonAcessar;
+    private javax.swing.JButton cadPessoaFisica;
+    private javax.swing.JButton cadPessoaJuridica;
     private javax.swing.JTextField chooseFile;
+    private javax.swing.JTextField cnpjPessoa;
     private javax.swing.JMenuItem downloadFiles;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu logout;
+    private javax.swing.JMenuItem logoutUser;
+    private javax.swing.JMenuBar menuPrincipal;
+    private javax.swing.JTextField nomePessoa;
     private javax.swing.JMenu optionsFiles;
+    private javax.swing.JPasswordField senha;
+    private javax.swing.JPasswordField senhaPessoa;
+    private javax.swing.JPanel telaCadastro;
+    private javax.swing.JButton telaCadastroPessoa;
     private javax.swing.JPanel telaInicial;
+    private javax.swing.JPanel telaLogin;
     private javax.swing.JPanel telaUser;
+    private javax.swing.JButton uploadFile;
     private javax.swing.JMenuItem uploadFiles;
+    private javax.swing.JButton voltarLogin;
     // End of variables declaration//GEN-END:variables
 }

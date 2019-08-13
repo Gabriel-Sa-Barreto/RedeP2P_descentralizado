@@ -45,4 +45,13 @@ public class PessoaJuridica extends Pessoa{
     public void setCNPJ(String CNPJ) {
         this.CNPJ = CNPJ;
     } 
+    
+    /**
+     * Método que retorna uma string com os atributos associados a uma pessoa juridica.
+     * @return 
+     */
+    @Override
+    public String toString() {
+        return super.getNome() + ';' + this.CNPJ + ';' + super.getSenha() + ';' + super.getAssinatura_digital() ;
+    }
 }

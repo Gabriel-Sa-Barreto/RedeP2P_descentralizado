@@ -1,0 +1,6 @@
+Gabriel;08432331503;biel;Alves
+Samuel;26107007504;sam;Sam
+tiago;33595356500;teste;tiago
+tiago;33595356500;teste;tiago
+biel;08432331503;biel;biel
+biel;08432331503;biel;biel
