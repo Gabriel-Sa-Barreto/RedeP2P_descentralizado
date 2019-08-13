@@ -45,4 +45,15 @@ public class PessoaFisica extends Pessoa{
     public void setCPF(String CPF) {
         this.CPF = CPF;
     } 
+
+    /**
+     * Método que retorna uma string com os atributos associados a uma pessoa fisica.
+     * @return 
+     */
+    @Override
+    public String toString() {
+        return super.getNome() + ';' + this.CPF + ';' + super.getSenha() + ';' + super.getAssinatura_digital() ;
+    }
+
+     
 }

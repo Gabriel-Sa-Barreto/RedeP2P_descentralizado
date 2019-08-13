@@ -19,20 +19,21 @@ public class ControllerPessoa {
     /**
      * Lista que armazena todas as pessoas físicas já cadastradas neste cartório.
      */
-    private static List<PessoaFisica> pessoasFisicas;
+    private static List<PessoaFisica> pessoasFisicas = new ArrayList<>();;
     
     /**
      * Lista que armazena todas as pessoas jurídicas já cadastradas neste cartório.
      */
-    private static List<PessoaJuridica> pessoasJuridicas;
+    private static List<PessoaJuridica> pessoasJuridicas = new ArrayList<>();;
 
     /**
      * Construtor que inicializa todos os atributos da classe para possíveis operações.
      */
-    public ControllerPessoa() {
-        pessoasFisicas = new ArrayList<>();
-        pessoasJuridicas = new ArrayList<>();
-    }
+    //public ControllerPessoa() {
+    //    pessoasFisicas = new ArrayList<>();
+    //    pessoasJuridicas = new ArrayList<>();
+    // }
+    public ControllerPessoa(){}
     
     /**
      * Método que realiza o cadastro de novas pessoas físicas no sistema do cartório.
@@ -46,6 +47,7 @@ public class ControllerPessoa {
         //tentar cadastrar uma pessoa
         PessoaFisica p = new PessoaFisica(CPF, nome, assinatura, senha);
         pessoasFisicas.add(p);
+        //pessoasFisicas.forEach(u -> System.out.println(u.toString()));
         //caso o cadastro seja feito com sucesso
         return 1; 
     }
@@ -117,16 +119,22 @@ public class ControllerPessoa {
     /**
      * Método que verifica se uma pessoa está cadastrada no sistema.
      * @param assinatura
+     * @param senha
      * @param opcao
      * @return 1 (sucesso) ou 0 (falha)
      */
-    public int existePessoa(String assinatura, int opcao){
+    public int existePessoa(String assinatura, String senha, int opcao){
         try{
             if(opcao == 0){ //busca de pessoa física
                 PessoaFisica p = null;
+                System.out.println(senha);
+                System.out.println(assinatura);
                 for(Iterator<PessoaFisica> it = pessoasFisicas.iterator(); it.hasNext();){
                     p = it.next();
-                    if(p.getAssinatura_digital().compareTo(assinatura) == 0){
+                    System.out.println(p.getAssinatura_digital());
+                    System.out.println(p.getSenha());
+                    if(p.getAssinatura_digital().equals(assinatura) && p.getSenha().equals(senha) ){
+                        
                         return 1;
                     }
                 } 
@@ -136,7 +144,7 @@ public class ControllerPessoa {
                 PessoaJuridica p = null;
                 for(Iterator<PessoaJuridica> it = pessoasJuridicas.iterator(); it.hasNext();){
                     p = it.next();
-                    if(p.getAssinatura_digital().equals(assinatura)){
+                    if(p.getAssinatura_digital().equals(assinatura) && p.getSenha().equals(senha)){
                         return 1;
                     }
                 } 
@@ -146,4 +154,11 @@ public class ControllerPessoa {
         }
         return 0;
     }
+
+    public static List<PessoaFisica> getPessoasFisicas() {
+        return pessoasFisicas;
+    }
+    
+    
+    
 }
