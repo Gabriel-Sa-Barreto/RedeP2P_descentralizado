@@ -45,6 +45,11 @@ public class Servidor implements Runnable{
         servidor = new ServerSocket(this.porta);
         System.out.println("Porta 12345 aberta!");    
     }
+
+    public int getPorta() {
+        return porta;
+    }
+    
     
     @Override
     public void run() {
@@ -85,7 +90,6 @@ public class Servidor implements Runnable{
         // envia msg a todos os clientes conectados
             DataOutputStream saida = new DataOutputStream(cartorio);
             saida.writeUTF(msg);
-            System.out.println("Entrou");
             //saida.close();
     }
 }

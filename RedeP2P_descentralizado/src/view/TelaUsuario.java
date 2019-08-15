@@ -11,7 +11,11 @@ import controller.ControllerPessoa;
 import controller.ControllerRede;
 import java.awt.CardLayout;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -35,14 +39,17 @@ public class TelaUsuario extends javax.swing.JFrame {
     
     private ControllerCartorio control=  new ControllerCartorio();
     
+    private Servidor servidor; //servidor do cliente
+    
     /**
      * Creates new form TelaUsuario
      */
-    public TelaUsuario() {
+    public TelaUsuario() throws IOException {
         initComponents();
         setMenuPrincipal(false);
         rede = new ControllerRede();
         conectarComCartorio(); //método que se conecta com todos os cartórios.
+        this.servidor = new Servidor(1840);
     }
 
     /**
@@ -526,11 +533,15 @@ public class TelaUsuario extends javax.swing.JFrame {
         control.limpaTabela(tableDocs); //limpa a tabela de documentos para uma possível atualização.
         DefaultTableModel mostrarDocs = (DefaultTableModel) tableDocs.getModel();
         //iterador para percorrer a lista de documentos cadastrados e exibir ao usuário.
-        for (Iterator<Documento> it = ControllerDocumento.getDocs().iterator(); it.hasNext();) {
-            Documento doc = it.next();
-            Object[] dados = {doc.getDocumento(), doc.getAssinatura_Documento()};
-            mostrarDocs.addRow(dados); //adiciona nova linha na tabela de documentos para download.
-        }    
+        if(ControllerDocumento.getDocs().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Nenhum documento submetido.");
+        }else{
+            for (Iterator<Documento> it = ControllerDocumento.getDocs().iterator(); it.hasNext();) {
+                Documento doc = it.next();
+                Object[] dados = {doc.getDocumento(), doc.getAssinatura_Documento()};
+                mostrarDocs.addRow(dados); //adiciona nova linha na tabela de documentos para download.
+            }
+        }
     }//GEN-LAST:event_downloadFilesActionPerformed
 
     /**
@@ -709,7 +720,16 @@ public class TelaUsuario extends javax.swing.JFrame {
      * @param evt 
      */
     private void downloadDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadDocActionPerformed
-        //realiza download do documento selecionado na tabela
+        try {
+            //realiza download do documento selecionado na tabela
+            //realiza a solicitação dos arquivos da pessoa para possíveis downloads.
+            String ipDaMaquina = InetAddress.getLocalHost().getHostAddress();
+            System.out.println(ipDaMaquina);
+            String inRede = servidor.getPorta() + ";" + ipDaMaquina + ";"+ ControllerPessoa.getAssDigitalPessoaLogada() + ";" + "historico_escolar20191.pdf";
+            rede.transmitirDadosCartorio(6, control , inRede);
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(TelaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_downloadDocActionPerformed
 
     /**
@@ -730,11 +750,14 @@ public class TelaUsuario extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) throws IOException {
-       Servidor servidor = new Servidor(1840); //servidor do cliente  
        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaUsuario().setVisible(true);
+                try {
+                    new TelaUsuario().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(TelaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

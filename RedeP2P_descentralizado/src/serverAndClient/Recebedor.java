@@ -6,9 +6,11 @@
 package serverAndClient;
 
 import controller.ControllerCartorio;
+import controller.ControllerDocumento;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import model.Documento;
 
 /**
  *
@@ -73,6 +75,11 @@ public class Recebedor implements Runnable{
                         break;
                     case "Ass-Fail":
                         ControllerCartorio.setCadSuccessfully(pacote.trim());
+                    default:
+                        //código responsável por receber a lista de documentos de uma pessoa que realizou uma solicitação.  
+                        String[] docSplit = pacote.split(";");
+                        Documento doc = new Documento(docSplit[0],docSplit[1]);
+                        ControllerDocumento.addDocs(doc);
                         break;
                 }
             }catch(IOException ex){

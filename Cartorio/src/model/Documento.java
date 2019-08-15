@@ -64,5 +64,9 @@ public class Documento {
     public void setAssinatura_Documento(String assinatura_Documento) {
         this.assinatura_Documento = assinatura_Documento;
     }
-     
+    
+    @Override
+    public String toString() {
+        return documento + ";" + assinatura_Documento;
+    }
 }

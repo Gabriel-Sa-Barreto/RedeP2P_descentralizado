@@ -13,8 +13,10 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Documento;
 import model.PessoaFisica;
 import model.PessoaJuridica;
 
@@ -88,7 +90,7 @@ public class TrataCliente implements Runnable{
                 }
             }
             
-            if(opcao == 3) {
+            if(opcao == 3) {//solicitação de login por um usuário.
                 String login = entrada.readUTF();
                 String[] dados = login.split(";");
                 if( controllerPessoa.existePessoa(dados[0].trim(), dados[1].trim(),0) == 1 || controllerPessoa.existePessoa(dados[0], dados[1],1) == 1 ) {
@@ -114,8 +116,21 @@ public class TrataCliente implements Runnable{
                 }
             }
             
-            if(opcao == 5){
+            if(opcao == 5){//recebe uma solicitação de um usuário para visualização dos seus arquivos submetidos. 
                 String pacotePessoa = entrada.readUTF();//assinatura digital da pessoa que logou
+                List<Documento> docs = ControllerArquivo.leitorDocumento(pacotePessoa.trim());
+                ControllerDocumento.enviarDoc(docs,servidor);
+            }
+            
+            if(opcao == 6){
+                String pacoteRede = entrada.readUTF();//dados do cliente da pessoa que logou
+                String[] dados = pacoteRede.split(";");
+                Client cliente = new Client(dados[1] ,ControllerPacotes.strToInt(dados[0], 1860));
+                String teste = ControllerArquivo.buscarDoc(dados[2].trim(), dados[3].trim());
+                if(teste != null)
+                    ControllerDocumento.sendFile(teste, cliente.getCliente());   
+                else
+                    System.out.println("Nao");
             }
             
             

@@ -33,12 +33,12 @@ public class ControllerPacotes {
     * @param padrao int - caso aconteça uma exceção um valor padrão que possa ser inserido.
     * @return int - retornar o inteiro.
     */    
-    public int strToInt(String valor, int padrao) {
+    public static int strToInt(String valor, int padrao) {
         try {
             return Integer.valueOf(valor); // Para retornar um Integer, use Integer.parseInt
         } 
         catch (NumberFormatException e) {  // Se houver erro na conversão, retorna o valor padrão
             return padrao;
         }
-    } 
+    }
 }

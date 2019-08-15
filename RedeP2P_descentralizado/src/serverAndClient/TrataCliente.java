@@ -41,19 +41,7 @@ public class TrataCliente implements Runnable{
     @Override
     public void run() {
         try {
-            DataInputStream entrada = new DataInputStream(cliente);
-            int opcao = entrada.readInt(); //acao a ser realizada com a informacao
-            if(opcao == 1){
-                String arquivo = entrada.readUTF();//nome do arquivo
-                String caminho ="../Arquivos/" + arquivo;//diretorio do novo arquivo
-                ControllerDocumento.receiveFile(caminho, cliente);//salvar arquivo
-                //verificacao do novo arquivo
-                File file = new File(caminho);
-                if(file.canRead()){
-                    servidor.distribuiMensagem("Sucesso");
-                    System.out.println("Sucesso1");
-                } 
-            }    
+            ControllerDocumento.receiveFile("../ArquivosD/teste.pdf", cliente);//salvar arquivo
         } catch (IOException ex) {
             Logger.getLogger(Recebedor.class.getName()).log(Level.SEVERE, null, ex);
         }

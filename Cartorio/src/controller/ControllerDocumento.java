@@ -26,7 +26,13 @@ import serverAndClient.Servidor;
  */
 public class ControllerDocumento {
     
-    
+    /**
+     * Método que envia um arquivo para o cliente ao qual o servidor está conectado.
+     * @param caminho
+     * @param sock
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public static void sendFile(String caminho , Socket sock) throws FileNotFoundException, IOException{
         FileInputStream fis = null;
         OutputStream os = null;
@@ -34,6 +40,7 @@ public class ControllerDocumento {
         ControllerRede rede = new ControllerRede();
         //String[] split = caminho.split("/");
         try{
+            System.out.println(caminho);
             File myFile = new File (caminho); //abri arquivo
             rede.enviarDado(sock,myFile.getName());
             //criar um vetor de byte do tamanho do arquivo
@@ -58,6 +65,12 @@ public class ControllerDocumento {
         }
     }
     
+    /**
+     * Método responsável por receber o arquivo envio por um usuário.
+     * @param caminho
+     * @param is
+     * @throws IOException 
+     */
     public static void receiveFile(String caminho , InputStream is) throws IOException{
         int bytesRead;
         int current = 0;
@@ -88,24 +101,18 @@ public class ControllerDocumento {
             if (bos != null) bos.close(); //fecha conexao
         }    
     }
-    
-    
-    public String buscarDocumento(){
-    
-    
-        return null;
-    }
-    
-    public void enviarDoc(List<Documento> docs , String assP , Servidor servidor) throws IOException{
-        List<Documento> doc = ControllerArquivo.leitorDocumento("../Banco/arquivosSalvos.txt", assP);
-        if(doc == null)
-            servidor.distribuiMensagem("Vazio");
-        else{
-            for (Iterator<Documento> it = doc.iterator(); it.hasNext();) {
-                Documento documento = it.next();
-                servidor.distribuiMensagem(documento.toString());
-            } 
-        }
+     
+    /**
+     * Método que envia todos os arquivos submetidos por um usuário.  
+     * @param docs
+     * @param servidor
+     * @throws IOException 
+     */
+    public static void enviarDoc(List<Documento> docs , Servidor servidor) throws IOException{
+        for (Iterator<Documento> it = docs.iterator(); it.hasNext();) {
+            Documento documento = it.next();
+            servidor.distribuiMensagem(documento.toString());
+        } 
     }
     
     

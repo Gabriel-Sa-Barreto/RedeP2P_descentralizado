@@ -69,14 +69,15 @@ public class ControllerArquivo {
         read.close();
     }
     
-    public static List<Documento> leitorDocumento(String caminho , String assP) throws FileNotFoundException, IOException{
+    public static List<Documento> leitorDocumento(String assP) throws FileNotFoundException, IOException{
+        String caminho = "../Banco/arquivosSalvos.txt";
         BufferedReader read = new BufferedReader(new FileReader(caminho));
         String linha = "";
         List<Documento> documentos = new ArrayList<>();
         while((linha = read.readLine()) != null){
             String[] split = linha.split(";");
             String[] arquivo = split[2].split("/");
-            String nome = arquivo[2];
+            String nome = arquivo[3];
             if(split[0].equals(assP)){
                 Documento doc = new Documento(nome , split[1]);
                 documentos.add(doc);
@@ -84,6 +85,27 @@ public class ControllerArquivo {
         }
         read.close();
         return documentos;
+    }
+    
+    public static String buscarDoc(String assP , String nome) throws IOException{
+        String caminho = "../Banco/arquivosSalvos.txt";
+        BufferedReader read = new BufferedReader(new FileReader(caminho));
+        String linha = "";
+        List<Documento> documentos = new ArrayList<>();
+        while((linha = read.readLine()) != null){
+            System.out.println("Entrou2");
+            String[] split = linha.split(";");
+            String[] arquivo = split[2].split("/");
+            String nomeArquivo = arquivo[3];
+            if(split[0].equals(assP) && nomeArquivo.equals(nome)){
+                System.out.println("Foi");
+                System.out.println(split[2]);
+                read.close();
+                return split[2];
+            }    
+        }
+        read.close();
+        return null;
     }
            
     private static PessoaFisica salvarPessoaFisica(String linha){

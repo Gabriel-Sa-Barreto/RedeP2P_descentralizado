@@ -67,7 +67,7 @@ public class Documento {
 
     @Override
     public String toString() {
-        return documento + ";" + assinatura_Documento + '}';
+        return documento + ";" + assinatura_Documento;
     }
     
     
