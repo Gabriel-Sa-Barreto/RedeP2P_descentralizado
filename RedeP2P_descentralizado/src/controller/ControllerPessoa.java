@@ -13,137 +13,28 @@ import model.PessoaJuridica;
 
 /**
  *
- * @author lablenda2
+ * @author Samuel Vitorio e Gabriel Sá
  */
 public class ControllerPessoa {
-    /**
-     * Lista que armazena todas as pessoas físicas já cadastradas neste cartório.
-     */
-    private static List<PessoaFisica> pessoasFisicas;
     
     /**
-     * Lista que armazena todas as pessoas jurídicas já cadastradas neste cartório.
+     * Atributo que armazena a assDigital da pessoa que está logada no sistema.
      */
-    private static List<PessoaJuridica> pessoasJuridicas;
+    private static String assDigitalPessoaLogada = "";
 
     /**
-     * Construtor que inicializa todos os atributos da classe para possíveis operações.
-     */
-    public ControllerPessoa() {
-        pessoasFisicas = new ArrayList<>();
-        pessoasJuridicas = new ArrayList<>();
-    }
-    
-    /**
-     * Método que realiza o cadastro de novas pessoas físicas no sistema do cartório.
-     * @param nome
-     * @param assinatura
-     * @param CPF 
-     * @param senha 
-     * @return  
-     */
-    public int cadastrarPessoa_fisica(String nome, String assinatura, String CPF, String senha){
-        //tentar cadastrar uma pessoa
-        PessoaFisica p = new PessoaFisica(CPF, nome, assinatura, senha);
-        pessoasFisicas.add(p);
-        //caso o cadastro seja feito com sucesso
-        return 1; 
-    }
-    
-    /**
-     * Método que realiza o cadastro de novas pessoas jurídicas no sistema do cartório.
-     * @param cnpj
-     * @param nome
-     * @param assinatura
-     * @param senha
+     * Método que retornar a assDigital da pessoa que está logada no sistema.
      * @return 
      */
-    public int cadastrarPessoa_juridica(String cnpj, String nome, String assinatura, String senha){
-        //tentar cadastrar uma pessoa
-        PessoaJuridica p = new PessoaJuridica(cnpj, nome, assinatura,senha);
-        pessoasJuridicas.add(p);
-        //caso o cadastro seja feito com sucesso.
-        return 1;
-    }    
-    
+    public static String getAssDigitalPessoaLogada() {
+        return assDigitalPessoaLogada;
+    }
+
     /**
-     * Método que retorna uma pessoa jurídica que está cadastrada no sistema.
-     * @param cnpj
-     * @return null ou a pessoa encontrada
+     * Método que modifica a assDigital da pessoa que está logada no sistema.
+     * @param assDigitalPessoaLogada 
      */
-    public PessoaJuridica busca_pessoaJuridica(String cnpj){
-        try{
-            PessoaJuridica p = null;
-            //realiza busca de pessoa
-            for(Iterator<PessoaJuridica> it = pessoasJuridicas.iterator(); it.hasNext();){
-                p = it.next();
-                System.out.println("teste");
-                if(p.getCNPJ().equals(cnpj)){
-                    return p;
-                }
-            } 
-        }catch(Exception e){
-            return null;
-        }
-        return null;
-    }   
-    
-  
-    /**
-     * Método que busca uma pessoa física pelo CPF que está cadastrada no sistema.
-     * @param CPF
-     * @return null ou a pessoa encontrada
-     */
-    public PessoaFisica busca_pessoaFisica(String CPF){
-        //se a lista estiver vazia.
-        if(pessoasFisicas.isEmpty()){
-            System.out.println("lista vazia");
-            return null;
-        }else {
-            //realiza busca de pessoa
-            Iterator<PessoaFisica> it = pessoasFisicas.iterator(); 
-            while ( it.hasNext() ){
-                PessoaFisica p = it.next();
-                System.out.println("dfsdf");
-                if(p.getCPF().equals(CPF)){
-                   return p;
-                }
-            } 
-        }
-        return null;
-    }   
-    
-    
-    /**
-     * Método que verifica se uma pessoa está cadastrada no sistema.
-     * @param assinatura
-     * @param opcao
-     * @return 1 (sucesso) ou 0 (falha)
-     */
-    public int existePessoa(String assinatura, int opcao){
-        try{
-            if(opcao == 0){ //busca de pessoa física
-                PessoaFisica p = null;
-                for(Iterator<PessoaFisica> it = pessoasFisicas.iterator(); it.hasNext();){
-                    p = it.next();
-                    if(p.getAssinatura_digital().compareTo(assinatura) == 0){
-                        return 1;
-                    }
-                } 
-            }
-            
-            if(opcao == 1){ //busca de pessoa jurídica
-                PessoaJuridica p = null;
-                for(Iterator<PessoaJuridica> it = pessoasJuridicas.iterator(); it.hasNext();){
-                    p = it.next();
-                    if(p.getAssinatura_digital().equals(assinatura)){
-                        return 1;
-                    }
-                } 
-            }
-        }catch(Exception e){
-            return 0;
-        }
-        return 0;
+    public static void setAssDigitalPessoaLogada(String assDigitalPessoaLogada) {
+        ControllerPessoa.assDigitalPessoaLogada = assDigitalPessoaLogada;
     }
 }

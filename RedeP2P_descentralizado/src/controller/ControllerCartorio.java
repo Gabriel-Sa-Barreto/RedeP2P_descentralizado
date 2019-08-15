@@ -7,6 +7,7 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import model.Cartorio;
 
 /**
@@ -104,4 +105,18 @@ public class ControllerCartorio {
     public synchronized static void setCadSuccessfully(String cadSuccessfully) {
         ControllerCartorio.cadSuccessfully = cadSuccessfully;
     }    
+    
+    
+    /**Método que limpa a tabela na interface
+    * @author Samuel Vitorio Lima e Gabriel Sá Barreto
+    * @param table javax.swing.JTable - limpar a tabela passada
+    */
+    public void limpaTabela(javax.swing.JTable table){
+        DefaultTableModel tblRemove = (DefaultTableModel) table.getModel();
+        while(tblRemove.getRowCount() != 0){ //remover todas celulas da tabela
+            tblRemove.removeRow(0);
+        }            
+    }
+    
+    
 }

@@ -5,6 +5,7 @@
  */
 package controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -191,6 +192,8 @@ public class ControllerPessoa {
         return pessoasFisicas;
     }
     
-    
+    public void criarDiretorio(String diretorio){
+        new File(diretorio).mkdir();
+    }
     
 }

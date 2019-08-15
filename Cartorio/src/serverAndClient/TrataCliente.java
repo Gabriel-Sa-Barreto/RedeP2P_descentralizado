@@ -53,18 +53,20 @@ public class TrataCliente implements Runnable{
 
     @Override
     public void run() {
-        //ControllerPessoa.getPessoasFisicas().forEach(u -> System.out.println(u.toString()));
         try {
             DataInputStream entrada = new DataInputStream(cliente);
             int opcao = entrada.readInt(); //acao a ser realizada com a informacao
             if(opcao == 1){
-                String arquivo = entrada.readUTF();//nome do arquivo
-                String caminho ="../Arquivos/" + arquivo;//diretorio do novo arquivo
+                String arquivo = entrada.readUTF();     //nome do arquivo
+                String assDigitalP = entrada.readUTF(); //assinatura da pessoa para associar ao arquivo.
+                String caminho ="../Arquivos/" +  assDigitalP.trim() + "/" +arquivo;//diretorio do novo arquivo
                 ControllerDocumento.receiveFile(caminho, cliente);//salvar arquivo
                 //verificacao do novo arquivo
                 File file = new File(caminho);
                 if(file.canRead()){
                     servidor.distribuiMensagem("Sucesso-Doc");
+                    String assDocumento = assDigitalP.trim() + arquivo;
+                    ControllerArquivo.escreverDocumento(caminho , assDigitalP.trim(), assDocumento);
                 } 
             }  
             
@@ -81,6 +83,7 @@ public class TrataCliente implements Runnable{
                 else{    
                     controllerPessoa.cadastrarPessoa_fisica(p.getNome(), p.getAssinatura_digital(), p.getCPF(), p.getSenha());
                     ControllerArquivo.escreverPessoaFisica(p);
+                    controllerPessoa.criarDiretorio("../Arquivos/"+ p.getAssinatura_digital());
                     servidor.distribuiMensagem("CadSucesso"); //cadastro de pessoa física com sucesso.
                 }
             }
@@ -109,6 +112,10 @@ public class TrataCliente implements Runnable{
                     ControllerArquivo.escreverPessoaJuridica(p);
                     servidor.distribuiMensagem("CadSucesso");//cadastro de pessoa jurídica com sucesso.
                 }
+            }
+            
+            if(opcao == 5){
+                String pacotePessoa = entrada.readUTF();//assinatura digital da pessoa que logou
             }
             
             

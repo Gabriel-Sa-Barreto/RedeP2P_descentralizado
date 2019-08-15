@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import model.Documento;
 
@@ -24,16 +25,23 @@ import model.Documento;
  */
 public class ControllerDocumento {
     
+    /**
+     * Atributo que representa uma lista de documentos armazenados
+     */
+    private static List<Documento> docs = new ArrayList<>();
+    
     
     public static void sendFile(String caminho , Socket sock) throws FileNotFoundException, IOException{
         FileInputStream fis = null;
         OutputStream os = null;
         BufferedInputStream bis = null;
         ControllerRede rede = new ControllerRede();
-        //String[] split = caminho.split("/");
         try{
             File myFile = new File (caminho); //abri arquivo
+            //envia nome do arquivo.
             rede.enviarDado(sock,myFile.getName());
+            //envia a assinatura digital da pessoa logada para realizar a associação com o arquivo.
+            rede.enviarDado(sock,ControllerPessoa.getAssDigitalPessoaLogada());
             //criar um vetor de byte do tamanho do arquivo
             byte [] mybytearray  = new byte [(int)myFile.length()]; 
             //cria um fluxo de saida dos bytes do arquivo
@@ -93,6 +101,27 @@ public class ControllerDocumento {
     
         return null;
     }
+
+    /**
+     * Método que retorna a lista de documentos.
+     * @return 
+     */
+    public static List<Documento> getDocs() {
+        return docs;
+    }
+
+    /**
+     * Método que adiciona um documento na lista docs.
+     * @param doc
+     */
+    public static void addDocs( Documento doc) {
+        ControllerDocumento.docs.add(doc);
+    }
+    
+    
+    
+    
+    
     
     
     

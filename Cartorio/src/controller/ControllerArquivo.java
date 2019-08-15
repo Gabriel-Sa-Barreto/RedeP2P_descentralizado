@@ -11,6 +11,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Documento;
 import model.Pessoa;
 import model.PessoaFisica;
 import model.PessoaJuridica;
@@ -37,9 +40,10 @@ public class ControllerArquivo {
     }
     
    
-    public static void escreverDocumento(String caminho , String assinatura) throws IOException{
-        BufferedWriter write = new BufferedWriter(new FileWriter(caminho , true));
-        write.append(assinatura + ';' + caminho + "\n");
+    public static void escreverDocumento(String caminho , String assinaturaP , String assinaturaD) throws IOException{
+        String caminhoArquivo = "../Banco/arquivosSalvos.txt";
+        BufferedWriter write = new BufferedWriter(new FileWriter(caminhoArquivo , true));
+        write.append(assinaturaP + ';' + assinaturaD + ";" + caminho + "\n");
         write.close();
     }
     
@@ -64,7 +68,24 @@ public class ControllerArquivo {
         }
         read.close();
     }
-       
+    
+    public static List<Documento> leitorDocumento(String caminho , String assP) throws FileNotFoundException, IOException{
+        BufferedReader read = new BufferedReader(new FileReader(caminho));
+        String linha = "";
+        List<Documento> documentos = new ArrayList<>();
+        while((linha = read.readLine()) != null){
+            String[] split = linha.split(";");
+            String[] arquivo = split[2].split("/");
+            String nome = arquivo[2];
+            if(split[0].equals(assP)){
+                Documento doc = new Documento(nome , split[1]);
+                documentos.add(doc);
+            }    
+        }
+        read.close();
+        return documentos;
+    }
+           
     private static PessoaFisica salvarPessoaFisica(String linha){
         String[] split = linha.split(";");
         PessoaFisica pessoa;

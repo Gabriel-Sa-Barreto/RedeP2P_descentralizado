@@ -15,8 +15,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Iterator;
 import java.util.List;
 import model.Documento;
+import serverAndClient.Servidor;
 
 /**
  *
@@ -92,6 +94,18 @@ public class ControllerDocumento {
     
     
         return null;
+    }
+    
+    public void enviarDoc(List<Documento> docs , String assP , Servidor servidor) throws IOException{
+        List<Documento> doc = ControllerArquivo.leitorDocumento("../Banco/arquivosSalvos.txt", assP);
+        if(doc == null)
+            servidor.distribuiMensagem("Vazio");
+        else{
+            for (Iterator<Documento> it = doc.iterator(); it.hasNext();) {
+                Documento documento = it.next();
+                servidor.distribuiMensagem(documento.toString());
+            } 
+        }
     }
     
     

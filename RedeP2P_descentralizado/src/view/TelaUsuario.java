@@ -11,10 +11,13 @@ import controller.ControllerPessoa;
 import controller.ControllerRede;
 import java.awt.CardLayout;
 import java.io.IOException;
+import java.util.Iterator;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
+import model.Documento;
 import model.ValidarCNPJ;
 import model.ValidarCPF;
 import serverAndClient.Client;
@@ -24,13 +27,7 @@ import serverAndClient.Servidor;
  *
  * @author gabriel
  */
-public class TelaUsuario extends javax.swing.JFrame {
-
-    /**
-     * Atributo para ter acesso a todas as ações referentes a pessoa.
-     */
-    private ControllerPessoa controllerPessoa;
-    
+public class TelaUsuario extends javax.swing.JFrame {   
     /**
      * Atributo responsável pelo envio de dados.
      */
@@ -44,7 +41,6 @@ public class TelaUsuario extends javax.swing.JFrame {
     public TelaUsuario() {
         initComponents();
         setMenuPrincipal(false);
-        controllerPessoa = new ControllerPessoa();
         rede = new ControllerRede();
         conectarComCartorio(); //método que se conecta com todos os cartórios.
     }
@@ -93,6 +89,10 @@ public class TelaUsuario extends javax.swing.JFrame {
         chooseFile = new javax.swing.JTextField();
         uploadFile = new javax.swing.JButton();
         DownloadFiles = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableDocs = new javax.swing.JTable();
+        downloadDoc = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
         menuPrincipal = new javax.swing.JMenuBar();
         optionsFiles = new javax.swing.JMenu();
         uploadFiles = new javax.swing.JMenuItem();
@@ -391,15 +391,60 @@ public class TelaUsuario extends javax.swing.JFrame {
 
         telaUser.add(UploadFiles, "Upload");
 
+        tableDocs.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Documento", "Ass.Doc"
+            }
+        ));
+        jScrollPane1.setViewportView(tableDocs);
+        if (tableDocs.getColumnModel().getColumnCount() > 0) {
+            tableDocs.getColumnModel().getColumn(0).setResizable(false);
+            tableDocs.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        downloadDoc.setText("Download");
+        downloadDoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downloadDocActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setFont(new java.awt.Font("Abyssinica SIL", 3, 12)); // NOI18N
+        jLabel13.setText("Documentos Submetidos:");
+
         javax.swing.GroupLayout DownloadFilesLayout = new javax.swing.GroupLayout(DownloadFiles);
         DownloadFiles.setLayout(DownloadFilesLayout);
         DownloadFilesLayout.setHorizontalGroup(
             DownloadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 522, Short.MAX_VALUE)
+            .addGroup(DownloadFilesLayout.createSequentialGroup()
+                .addGroup(DownloadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(DownloadFilesLayout.createSequentialGroup()
+                        .addGroup(DownloadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(DownloadFilesLayout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addComponent(downloadDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(DownloadFilesLayout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(jLabel13)))
+                        .addGap(0, 313, Short.MAX_VALUE))
+                    .addGroup(DownloadFilesLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
         );
         DownloadFilesLayout.setVerticalGroup(
             DownloadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 414, Short.MAX_VALUE)
+            .addGroup(DownloadFilesLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(jLabel13)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(downloadDoc)
+                .addGap(14, 14, 14))
         );
 
         telaUser.add(DownloadFiles, "Download");
@@ -478,6 +523,14 @@ public class TelaUsuario extends javax.swing.JFrame {
     private void downloadFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadFilesActionPerformed
         CardLayout cl = (CardLayout) telaUser.getLayout();
         cl.show(telaUser, "Download");
+        control.limpaTabela(tableDocs); //limpa a tabela de documentos para uma possível atualização.
+        DefaultTableModel mostrarDocs = (DefaultTableModel) tableDocs.getModel();
+        //iterador para percorrer a lista de documentos cadastrados e exibir ao usuário.
+        for (Iterator<Documento> it = ControllerDocumento.getDocs().iterator(); it.hasNext();) {
+            Documento doc = it.next();
+            Object[] dados = {doc.getDocumento(), doc.getAssinatura_Documento()};
+            mostrarDocs.addRow(dados); //adiciona nova linha na tabela de documentos para download.
+        }    
     }//GEN-LAST:event_downloadFilesActionPerformed
 
     /**
@@ -508,6 +561,15 @@ public class TelaUsuario extends javax.swing.JFrame {
             while(!ControllerCartorio.isLoginCartorio()); //espera pela confirmação do login
             ControllerCartorio.setLoginCartorio(false);
             JOptionPane.showMessageDialog(null, "Login feito com sucesso!!");
+            
+            //realiza a solicitação dos arquivos da pessoa para possíveis downloads.
+            rede.transmitirDadosCartorio(5, control, ass_digital);
+            
+            
+            
+            
+            //armazena a assinatura digital pessoa para futuras buscas e registros.
+            ControllerPessoa.setAssDigitalPessoaLogada(ass_digital); 
             this.setMenuPrincipal(true); //ativa o menu principal
             //exibi a tela inicial
             CardLayout cl = (CardLayout) telaUser.getLayout(); 
@@ -643,6 +705,14 @@ public class TelaUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_uploadFileActionPerformed
 
     /**
+     * Método que realiza o download do documento desejado.
+     * @param evt 
+     */
+    private void downloadDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadDocActionPerformed
+        //realiza download do documento selecionado na tabela
+    }//GEN-LAST:event_downloadDocActionPerformed
+
+    /**
      * Método para ativar ou desativar o menu principal.
      * @param option
      */
@@ -681,11 +751,13 @@ public class TelaUsuario extends javax.swing.JFrame {
     private javax.swing.JButton cadPessoaJuridica;
     private javax.swing.JTextField chooseFile;
     private javax.swing.JTextField cnpjPessoa;
+    private javax.swing.JButton downloadDoc;
     private javax.swing.JMenuItem downloadFiles;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
@@ -696,6 +768,7 @@ public class TelaUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenu logout;
     private javax.swing.JMenuItem logoutUser;
     private javax.swing.JMenuBar menuPrincipal;
@@ -703,6 +776,7 @@ public class TelaUsuario extends javax.swing.JFrame {
     private javax.swing.JMenu optionsFiles;
     private javax.swing.JPasswordField senha;
     private javax.swing.JPasswordField senhaPessoa;
+    private javax.swing.JTable tableDocs;
     private javax.swing.JPanel telaCadastro;
     private javax.swing.JButton telaCadastroPessoa;
     private javax.swing.JPanel telaInicial;
