@@ -30,8 +30,8 @@ public class ControllerArquivo {
     }
     
     
-    public static void escreverPessoaJuridica(String caminho , PessoaJuridica pessoa) throws IOException{
-        BufferedWriter write = new BufferedWriter(new FileWriter(caminho,true));
+    public static void escreverPessoaJuridica(PessoaJuridica pessoa) throws IOException{
+        BufferedWriter write = new BufferedWriter(new FileWriter("../Banco/juridico.txt",true));
         write.append(pessoa.toString()+ "\n");
         write.close();
     }

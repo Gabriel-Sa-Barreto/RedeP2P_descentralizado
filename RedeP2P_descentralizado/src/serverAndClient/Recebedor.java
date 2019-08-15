@@ -7,6 +7,7 @@ package serverAndClient;
 
 import controller.ControllerCartorio;
 import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -59,12 +60,22 @@ public class Recebedor implements Runnable{
                         ControllerCartorio.setLoginCartorio(true);
                         System.out.println(ControllerCartorio.isLoginCartorio());
                         break;
-                
-                    case "Sucesso-Doc":
-                        
+                    case "Sucesso-Doc": //mensagem de aviso do servidor ao qual informa que um registro de documento foi feito com sucesso.
+                        break;
+                    case "CadSucesso": //mensagem de aviso do servidor ao qual informa que um cadastro de pessoa física ou jurídica foi realizado com sucesso.
+                        ControllerCartorio.setCadSuccessfully(pacote.trim());
+                        break;
+                    case "CNPJ-Fail":    
+                        ControllerCartorio.setCadSuccessfully(pacote.trim());
+                        break;
+                    case "CPF-Fail":    
+                        ControllerCartorio.setCadSuccessfully(pacote.trim());
+                        break;
+                    case "Ass-Fail":
+                        ControllerCartorio.setCadSuccessfully(pacote.trim());
                         break;
                 }
-            }catch(Exception ex){
+            }catch(IOException ex){
                 System.out.println(ex.toString());
             }
         }

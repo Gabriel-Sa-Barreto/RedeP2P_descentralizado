@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.PessoaFisica;
+import model.PessoaJuridica;
 
 /**
  *
@@ -67,12 +68,21 @@ public class TrataCliente implements Runnable{
                 } 
             }  
             
-            if(opcao == 2){
+            if(opcao == 2){ //cadastrar pessoa física
                 String pacotePessoa = entrada.readUTF();//dados de pessoa física
                 PessoaFisica p = ControllerPacotes.repartirPacotePF(pacotePessoa);
                 System.out.println(pacotePessoa);
-                controllerPessoa.cadastrarPessoa_fisica(p.getNome(), p.getAssinatura_digital(), p.getCPF(), p.getSenha());
-                ControllerArquivo.escreverPessoaFisica(p);
+                
+                if(controllerPessoa.busca_pessoaAssinatura(p.getAssinatura_digital(), 0) || controllerPessoa.busca_pessoaAssinatura(p.getAssinatura_digital(), 1)){
+                    servidor.distribuiMensagem("Ass-Fail"); //cadastro de pessoa física falhou.
+                }
+                else if(controllerPessoa.busca_pessoaFisica(p.getCPF()) != null)
+                    servidor.distribuiMensagem("CPF-Fail");
+                else{    
+                    controllerPessoa.cadastrarPessoa_fisica(p.getNome(), p.getAssinatura_digital(), p.getCPF(), p.getSenha());
+                    ControllerArquivo.escreverPessoaFisica(p);
+                    servidor.distribuiMensagem("CadSucesso"); //cadastro de pessoa física com sucesso.
+                }
             }
             
             if(opcao == 3) {
@@ -83,6 +93,24 @@ public class TrataCliente implements Runnable{
                     servidor.distribuiMensagem("Sucesso-Login");
                 }     
             }
+            
+            
+            if(opcao == 4){ //cadastrar pessoa jurídica
+                String pacotePessoa = entrada.readUTF();//dados de pessoa jurídica
+                PessoaJuridica p = ControllerPacotes.repartirPacotePJ(pacotePessoa);
+                System.out.println(pacotePessoa);
+                if(controllerPessoa.busca_pessoaAssinatura(p.getAssinatura_digital(), 0) || controllerPessoa.busca_pessoaAssinatura(p.getAssinatura_digital(), 1)){
+                    servidor.distribuiMensagem("Ass-Fail"); //cadastro de pessoa jurídica falhou.
+                }
+                else if(controllerPessoa.busca_pessoaJuridica(p.getCNPJ()) != null)
+                    servidor.distribuiMensagem("CNPJ-Fail");
+                else{
+                    controllerPessoa.cadastrarPessoa_juridica(p.getNome(), p.getAssinatura_digital(), p.getCNPJ(), p.getSenha());
+                    ControllerArquivo.escreverPessoaJuridica(p);
+                    servidor.distribuiMensagem("CadSucesso");//cadastro de pessoa jurídica com sucesso.
+                }
+            }
+            
             
             
             

@@ -60,7 +60,7 @@ public class ControllerPessoa {
      * @param senha
      * @return 
      */
-    public int cadastrarPessoa_juridica(String cnpj, String nome, String assinatura, String senha){
+    public int cadastrarPessoa_juridica(String nome, String assinatura, String cnpj, String senha){
         //tentar cadastrar uma pessoa
         PessoaJuridica p = new PessoaJuridica(cnpj, nome, assinatura,senha);
         pessoasJuridicas.add(p);
@@ -99,14 +99,12 @@ public class ControllerPessoa {
     public PessoaFisica busca_pessoaFisica(String CPF){
         //se a lista estiver vazia.
         if(pessoasFisicas.isEmpty()){
-            System.out.println("lista vazia");
             return null;
         }else {
             //realiza busca de pessoa
             Iterator<PessoaFisica> it = pessoasFisicas.iterator(); 
             while ( it.hasNext() ){
                 PessoaFisica p = it.next();
-                System.out.println("dfsdf");
                 if(p.getCPF().equals(CPF)){
                    return p;
                 }
@@ -115,6 +113,41 @@ public class ControllerPessoa {
         return null;
     }   
     
+    /**
+     * Método que busca uma pessoa pela sua assinatura digital que está cadastrada no sistema.
+     * @param assinatura
+     * @param opcao
+     * @return null ou a pessoa encontrada
+     */
+    public boolean busca_pessoaAssinatura(String assinatura, int opcao){
+        //se a lista estiver vazia.
+        if(pessoasFisicas.isEmpty()){
+            return false;
+        }else {
+            PessoaFisica pf = null;
+            if(opcao == 0){ //busca assinatura na lista de pessoas físicas.
+                Iterator<PessoaFisica> it = pessoasFisicas.iterator(); 
+                while ( it.hasNext() ){
+                    pf = it.next();
+                    if(pf.getAssinatura_digital().equals(assinatura)){
+                       return true;
+                    }
+                } 
+            }
+            
+            PessoaJuridica pj = null;
+            if(opcao == 1){ //busca assinatura na lista de pessoas jurídicas.
+                Iterator<PessoaJuridica> it = pessoasJuridicas.iterator(); 
+                while ( it.hasNext() ){
+                    pj = it.next();
+                    if(pj.getAssinatura_digital().equals(assinatura)){
+                       return true;
+                    }
+                } 
+            }
+        }
+        return false;
+    }   
     
     /**
      * Método que verifica se uma pessoa está cadastrada no sistema.
@@ -134,7 +167,6 @@ public class ControllerPessoa {
                     System.out.println(p.getAssinatura_digital());
                     System.out.println(p.getSenha());
                     if(p.getAssinatura_digital().equals(assinatura) && p.getSenha().equals(senha) ){
-                        
                         return 1;
                     }
                 } 

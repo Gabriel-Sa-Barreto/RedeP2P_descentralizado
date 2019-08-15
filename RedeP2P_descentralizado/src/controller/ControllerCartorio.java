@@ -21,6 +21,11 @@ public class ControllerCartorio {
     private static boolean loginCartorio = false;
     
     /**
+     * Atributo que indica se uma ação de casdastro foi realizada com sucesso pelos cartórios.
+     */
+    private static String cadSuccessfully = new String();
+     
+    /**
      * Atributo que armazena a lista de cartórios existentes. 
      */
     private List<Cartorio> cartorios;
@@ -81,9 +86,22 @@ public class ControllerCartorio {
     public synchronized static void setLoginCartorio(boolean loginCartorio) {
         ControllerCartorio.loginCartorio = loginCartorio;
     }
-    
-    
-    
-    
-    
+
+    /**
+     * Método que verifica o valor atual do atributo cadSuccessfully.
+     * @return 
+     */
+    public static String getCadSuccessfully() {
+        return cadSuccessfully;
+    }
+
+    /**
+     * Método que seta o valor atual do atributo cadSuccessfully.
+     * Este método utiliza a palavra-chave synchronized, que não permite que mais de uma
+     * thread ou classe, acesse esse método ao mesmo tempo.
+     * @param cadSuccessfully 
+     */
+    public synchronized static void setCadSuccessfully(String cadSuccessfully) {
+        ControllerCartorio.cadSuccessfully = cadSuccessfully;
+    }    
 }

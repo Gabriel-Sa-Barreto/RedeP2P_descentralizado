@@ -518,6 +518,12 @@ public class TelaUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAcessarActionPerformed
 
     private void telaCadastroPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telaCadastroPessoaActionPerformed
+        //Limpa todos os campos de textos da tela.
+        nomePessoa.setText(null);
+        CpfPessoa.setText(null);
+        cnpjPessoa.setText(null);
+        assDigital.setText(null);
+        senha.setText(null);
         CardLayout cl = (CardLayout) telaUser.getLayout(); 
         cl.show(telaUser, "telaCadastro");
     }//GEN-LAST:event_telaCadastroPessoaActionPerformed
@@ -540,12 +546,23 @@ public class TelaUsuario extends javax.swing.JFrame {
             if(!ValidarCPF.isCPF(cpf)){
                 JOptionPane.showMessageDialog(null, "CPF inválido. Informe os dados corretamente!");
             } else {
-                //Com o CPF validado, realiza uma busca para ver se alguém já está com aquele CPF cadastrado.
-                if( controllerPessoa.busca_pessoaFisica(cpf) != null ){
-                    JOptionPane.showMessageDialog(null, "Este CPF já está cadastrado no sistema!");
-                }else{
-                    //envia dados de cadastro aos cartórios.
-                    rede.transmitirDadosCartorio(2,control,dados);
+                rede.transmitirDadosCartorio(2,control,dados);
+                while(true){
+                    if( ControllerCartorio.getCadSuccessfully().equals("CadSucesso") ){
+                        ControllerCartorio.setCadSuccessfully(new String());
+                        JOptionPane.showMessageDialog(null, "Cadastro feito com sucesso!");
+                        break;//cadastro foi realizado com sucesso.
+                    }
+                    else if(ControllerCartorio.getCadSuccessfully().equals("CPF-Fail")){
+                        ControllerCartorio.setCadSuccessfully(new String());
+                        JOptionPane.showMessageDialog(null, "CPF já cadastrado!");
+                        break;
+                    }
+                    else if(ControllerCartorio.getCadSuccessfully().equals("Ass-Fail")){
+                        ControllerCartorio.setCadSuccessfully(new String());
+                        JOptionPane.showMessageDialog(null, "Ass Digital já cadastrada!");
+                        break;
+                    }   
                 }
             }
         }
@@ -561,6 +578,7 @@ public class TelaUsuario extends javax.swing.JFrame {
         String cnpj  = cnpjPessoa.getText();
         String assDigitalP = assDigital.getText();
         String senhaP = new String ( senha.getPassword() );
+        String dados = nome + ';' + cnpj + ';' + senhaP + ';' + assDigitalP;
         if(nome.isEmpty() || cnpj.isEmpty() || assDigitalP.isEmpty() || senhaP.isEmpty() ){
             JOptionPane.showMessageDialog(null, "Informe todos dados necessários");
         }else{
@@ -568,14 +586,22 @@ public class TelaUsuario extends javax.swing.JFrame {
             if(!ValidarCNPJ.isCNPJ(cnpj)){
                 JOptionPane.showMessageDialog(null, "CNPJ inválido. Informe os dados corretamente!");
             } else {
-                //Com o CPF validado, realiza uma busca para ver se alguém já está com aquele CPF cadastrado.
-                if( controllerPessoa.busca_pessoaJuridica(cnpj) != null ){
-                    JOptionPane.showMessageDialog(null, "Este CNPJ já está cadastrado no sistema!");
-                }else{
-                    //realiza o processo de cadastro.
-                    if( controllerPessoa.cadastrarPessoa_juridica(cnpj, nome,assDigitalP, senhaP) == 1){
+                rede.transmitirDadosCartorio(4,control,dados);
+                while(true){
+                    if( ControllerCartorio.getCadSuccessfully().equals("CadSucesso") ){
+                        ControllerCartorio.setCadSuccessfully(new String());
                         JOptionPane.showMessageDialog(null, "Cadastro feito com sucesso!");
-                        JOptionPane.showMessageDialog(null, "Nome: " + nome + " com CNPJ: " + ValidarCNPJ.imprimeCNPJ(cnpj) + " assinatura: " + assDigitalP);
+                        break;
+                    }
+                    else if(ControllerCartorio.getCadSuccessfully().equals("CNPJ-Fail")){
+                        ControllerCartorio.setCadSuccessfully(new String());
+                        JOptionPane.showMessageDialog(null, "CNPJ já cadastrado!");
+                        break;
+                    }
+                    else if(ControllerCartorio.getCadSuccessfully().equals("Ass-Fail")){
+                        ControllerCartorio.setCadSuccessfully(new String());
+                        JOptionPane.showMessageDialog(null, "Ass Digital já cadastrada!");
+                        break;
                     }
                 }
             }
