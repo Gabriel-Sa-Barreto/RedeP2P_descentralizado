@@ -19,7 +19,7 @@ public class ControllerCartorio {
     /**
      * Atributo que dar acesso ao sistema de cartórios.
      */
-    private static boolean loginCartorio = false;
+    private static String loginCartorio = new String();
     
     /**
      * Atributo que indica se uma ação de casdastro foi realizada com sucesso pelos cartórios.
@@ -70,10 +70,10 @@ public class ControllerCartorio {
     }
 
     /**
-     * Método que verifica o estado atual do atributo loginCartorio.
+     * Método que retorna o estado atual do atributo loginCartorio.
      * @return 
      */
-    public static boolean isLoginCartorio() {
+    public static String isLoginCartorio() {
         return loginCartorio;
     }
 
@@ -84,7 +84,7 @@ public class ControllerCartorio {
      * thread ou classe, acesse esse método ao mesmo tempo.
      * @param loginCartorio 
      */
-    public synchronized static void setLoginCartorio(boolean loginCartorio) {
+    public synchronized static void setLoginCartorio(String loginCartorio) {
         ControllerCartorio.loginCartorio = loginCartorio;
     }
 

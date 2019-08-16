@@ -96,7 +96,9 @@ public class TrataCliente implements Runnable{
                 if( controllerPessoa.existePessoa(dados[0].trim(), dados[1].trim(),0) == 1 || controllerPessoa.existePessoa(dados[0], dados[1],1) == 1 ) {
                     //caso a senha e assinatura seja de uma pessoa física ou jurídica.
                     servidor.distribuiMensagem("Sucesso-Login");
-                }     
+                }else{
+                    servidor.distribuiMensagem("Login-Failed");
+                }
             }
             
             
@@ -126,16 +128,11 @@ public class TrataCliente implements Runnable{
                 String pacoteRede = entrada.readUTF();//dados do cliente da pessoa que logou
                 String[] dados = pacoteRede.split(";");
                 Client cliente = new Client(dados[1] ,ControllerPacotes.strToInt(dados[0], 1860));
-                String teste = ControllerArquivo.buscarDoc(dados[2].trim(), dados[3].trim());
-                if(teste != null)
-                    ControllerDocumento.sendFile(teste, cliente.getCliente());   
-                else
-                    System.out.println("Nao");
+                String file = ControllerArquivo.buscarDoc(dados[2].trim(), dados[3].trim());
+                if(file != null)
+                    ControllerDocumento.sendFile(file, cliente.getCliente());   
             }
-            
-            
-            
-            
+        
         } catch (IOException ex) {
             Logger.getLogger(Recebedor.class.getName()).log(Level.SEVERE, null, ex);
         }

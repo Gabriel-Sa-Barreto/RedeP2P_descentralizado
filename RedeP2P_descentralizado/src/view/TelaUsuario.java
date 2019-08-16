@@ -569,16 +569,25 @@ public class TelaUsuario extends javax.swing.JFrame {
         }else{
             //envia os dados de login.
             rede.transmitirDadosCartorio(3,control,login);
-            while(!ControllerCartorio.isLoginCartorio()); //espera pela confirmação do login
-            ControllerCartorio.setLoginCartorio(false);
-            JOptionPane.showMessageDialog(null, "Login feito com sucesso!!");
+            while(true){
+                //espera pela confirmação do login
+                if(ControllerCartorio.isLoginCartorio().equals("Sucesso-Login")){
+                    JOptionPane.showMessageDialog(null, "Login feito com sucesso!!");
+                    ControllerCartorio.setLoginCartorio("");
+                    //caso o login seja feito com sucesso, sai do loop while e realiza as outras ações.
+                    break;
+                }
+                
+                if(ControllerCartorio.isLoginCartorio().equals("Login-Failed")){
+                    JOptionPane.showMessageDialog(null, "Não foi encontrado ninguém com esses dados. Verifique novamente!");
+                    ControllerCartorio.setLoginCartorio("");
+                    //caso o login falhe, então simplemente sai da função e espera por uma nova solicitação.
+                    return;
+                }
+            }          
             
             //realiza a solicitação dos arquivos da pessoa para possíveis downloads.
             rede.transmitirDadosCartorio(5, control, ass_digital);
-            
-            
-            
-            
             //armazena a assinatura digital pessoa para futuras buscas e registros.
             ControllerPessoa.setAssDigitalPessoaLogada(ass_digital); 
             this.setMenuPrincipal(true); //ativa o menu principal

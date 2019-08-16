@@ -59,8 +59,10 @@ public class Recebedor implements Runnable{
                 System.out.println(pacote);
                 switch(pacote) {
                     case "Sucesso-Login":
-                        ControllerCartorio.setLoginCartorio(true);
-                        System.out.println(ControllerCartorio.isLoginCartorio());
+                        ControllerCartorio.setLoginCartorio(pacote);
+                        break;
+                    case "Login-Failed":
+                        ControllerCartorio.setLoginCartorio(pacote);
                         break;
                     case "Sucesso-Doc": //mensagem de aviso do servidor ao qual informa que um registro de documento foi feito com sucesso.
                         break;
