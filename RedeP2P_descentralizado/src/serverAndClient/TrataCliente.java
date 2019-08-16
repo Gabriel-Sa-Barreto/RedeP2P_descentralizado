@@ -41,7 +41,7 @@ public class TrataCliente implements Runnable{
     @Override
     public void run() {
         try {
-            ControllerDocumento.receiveFile("../ArquivosD/teste.pdf", cliente);//salvar arquivo
+            ControllerDocumento.receiveFile(ControllerDocumento.getPathToSaveFile() + "/" + ControllerDocumento.getNomeDocToSave(), cliente);//salvar arquivo
         } catch (IOException ex) {
             Logger.getLogger(Recebedor.class.getName()).log(Level.SEVERE, null, ex);
         }

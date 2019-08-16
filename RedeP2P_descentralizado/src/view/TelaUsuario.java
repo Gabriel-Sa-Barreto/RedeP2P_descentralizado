@@ -720,15 +720,35 @@ public class TelaUsuario extends javax.swing.JFrame {
      * @param evt 
      */
     private void downloadDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadDocActionPerformed
-        try {
-            //realiza download do documento selecionado na tabela
-            //realiza a solicitação dos arquivos da pessoa para possíveis downloads.
-            String ipDaMaquina = InetAddress.getLocalHost().getHostAddress();
-            System.out.println(ipDaMaquina);
-            String inRede = servidor.getPorta() + ";" + ipDaMaquina + ";"+ ControllerPessoa.getAssDigitalPessoaLogada() + ";" + "historico_escolar20191.pdf";
-            rede.transmitirDadosCartorio(6, control , inRede);
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(TelaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        //abre janela para escolha da pasta onde o arquivo será armazenado.
+        JFileChooser  fc = new JFileChooser();
+        FileFilter filter = new FileNameExtensionFilter("files","pdf", "txt", "png");
+        fc.setFileFilter(filter);
+        fc.setCurrentDirectory(new java.io.File("../"));
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fc.setDialogTitle("Choose a place:");
+        if(fc.showOpenDialog(downloadDoc) == JFileChooser.APPROVE_OPTION){
+            //System.out.println(fc.getSelectedFile().getAbsolutePath());
+            //escolher um documento para realizar o download.
+            if(tableDocs.getSelectedRow() != -1){
+                String assDoc = tableDocs.getValueAt(tableDocs.getSelectedRow(),1).toString(); //assinatura do documento.
+                String nomeDoc   = tableDocs.getValueAt(tableDocs.getSelectedRow(),0).toString(); //nome do documento
+                
+                ControllerDocumento.setNomeDocToSave(nomeDoc); //nome do arquivo que será salvo.
+                ControllerDocumento.setPathToSaveFile(fc.getSelectedFile().getAbsolutePath()); //caminho para salvar o arquivo.
+                
+                try {
+                    //realiza download do documento selecionado na tabela
+                    String ipDaMaquina = InetAddress.getLocalHost().getHostAddress();
+                    System.out.println(ipDaMaquina);
+                    String inRede = servidor.getPorta() + ";" + ipDaMaquina + ";"+ ControllerPessoa.getAssDigitalPessoaLogada() + ";" + nomeDoc;
+                    rede.transmitirDadosCartorio(6, control , inRede);
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(TelaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+                JOptionPane.showMessageDialog(null,"Selecione um documento na tabela!");
+            }
         }
     }//GEN-LAST:event_downloadDocActionPerformed
 

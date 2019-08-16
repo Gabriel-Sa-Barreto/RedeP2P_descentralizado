@@ -30,6 +30,15 @@ public class ControllerDocumento {
      */
     private static List<Documento> docs = new ArrayList<>();
     
+    /**
+     * Atributo que armazena um caminho no qual o usuário deseja salvar algum arquivo quando realizar o download. 
+     */
+    private static String pathToSaveFile;
+    
+    /**
+     * Atributo que armazena o nome do arquivo que será salvo em um diretório depois de realizado o download.
+     */
+    private static String nomeDocToSave;
     
     public static void sendFile(String caminho , Socket sock) throws FileNotFoundException, IOException{
         FileInputStream fis = null;
@@ -92,7 +101,10 @@ public class ControllerDocumento {
         }finally {
             if (fos != null) fos.close(); //fecha o fluxo    
             if (bos != null) bos.close(); //fecha conexao
-        }    
+        }
+        //reseta o os atributos do nome do arquivo e do caminho onde o arquivo foi salvo.
+        ControllerDocumento.setNomeDocToSave("");
+        ControllerDocumento.setPathToSaveFile("");
     }
     
     
@@ -117,6 +129,43 @@ public class ControllerDocumento {
     public static void addDocs( Documento doc) {
         ControllerDocumento.docs.add(doc);
     }
+
+    /**
+     * Método que retorna o caminho que o usuário escolheu para salvar um arquivo.
+     * @return 
+     */
+    public static String getPathToSaveFile() {
+        return pathToSaveFile;
+    }
+
+    /**
+     * Método que configura o caminho que o usuário escolheu para salvar um arquivo.
+     * @param pathToSaveFile 
+     */
+    public static void setPathToSaveFile(String pathToSaveFile) {
+        ControllerDocumento.pathToSaveFile = pathToSaveFile;
+    }
+
+    /**
+     * Método que retorna o nome do arquivo que será salvo após realizado o download do mesmo.
+     * @return 
+     */
+    public static String getNomeDocToSave() {
+        return nomeDocToSave;
+    }
+
+    /**
+     * Método que configura o nome do arquivo que será salvo após realizado o download do mesmo.
+     * @param nomeDocToSave 
+     */
+    public static void setNomeDocToSave(String nomeDocToSave) {
+        ControllerDocumento.nomeDocToSave = nomeDocToSave;
+    }
+    
+    
+    
+    
+    
     
     
     
