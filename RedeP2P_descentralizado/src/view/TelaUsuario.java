@@ -712,6 +712,7 @@ public class TelaUsuario extends javax.swing.JFrame {
                     cliente = new Client(control.busca(i).getIp(),control.busca(i).getPorta());
                     cliente.executa();
                     rede.enviarDadoInt(cliente.getCliente(), 1);
+                    rede.enviarDadoInt(cliente.getCliente(), 1);
                     ControllerDocumento.sendFile(chooseFile.getText(), cliente.getCliente());
                     cliente.fecharConexão();
                     cliente = new Client(control.busca(i).getIp(),control.busca(i).getPorta());

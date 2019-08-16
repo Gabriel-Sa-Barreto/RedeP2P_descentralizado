@@ -5,6 +5,7 @@
  */
 package cartorio;
 
+import controller.ControllerCartorio;
 import java.io.IOException;
 import serverAndClient.Servidor;
 
@@ -18,7 +19,8 @@ public class Cartorio {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        Servidor server = new Servidor(1880);
+        Servidor server = new Servidor(1860);
+        ControllerCartorio.cadastrar(1880, "127.0.0.1");
     }
     
 }

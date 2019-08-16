@@ -1,2 +1,6 @@
 Alves6;Alves6Currículo_Lattes (Gabriel Sá Barreto Alves).pdf;../Arquivos/Alves6/Currículo_Lattes (Gabriel Sá Barreto Alves).pdf
 Alves6;Alves6historico_escolar20191.pdf;../Arquivos/Alves6/historico_escolar20191.pdf
+Alves6;Alves6certificado_machine.pdf;../Teste/Alves6/certificado_machine.pdf
+Alves6;Alves6certificado_machine.pdf;../Teste/Alves6/certificado_machine.pdf
+Alves6;Alves6comprovanteMatricula.pdf;../Teste/Alves6/comprovanteMatricula.pdf
+Alves6;Alves6comprovanteMatricula.pdf;../Teste/Alves6/comprovanteMatricula.pdf

@@ -9,6 +9,7 @@ import controller.ControllerArquivo;
 import controller.ControllerDocumento;
 import controller.ControllerPacotes;
 import controller.ControllerPessoa;
+import controller.ControllerRede;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +31,11 @@ public class TrataCliente implements Runnable{
      * Atributo que gerencia as ações referente a pessoa física e jurídica.
      */
     private ControllerPessoa controllerPessoa;
+    
+    /**
+     * Atributo que gerencia as ações referente a pessoa física e jurídica.
+     */
+    private ControllerRede rede;
         
     /**
      * InputStream do cliente.
@@ -50,7 +56,7 @@ public class TrataCliente implements Runnable{
         this.cliente  = cliente;
         this.servidor = servidor;
         this.controllerPessoa = new ControllerPessoa();
-        
+        this.rede = new ControllerRede();
     } 
 
     @Override
@@ -59,17 +65,23 @@ public class TrataCliente implements Runnable{
             DataInputStream entrada = new DataInputStream(cliente);
             int opcao = entrada.readInt(); //acao a ser realizada com a informacao
             if(opcao == 1){
+                int reenvio = entrada.readInt();
                 String arquivo = entrada.readUTF();     //nome do arquivo
                 String assDigitalP = entrada.readUTF(); //assinatura da pessoa para associar ao arquivo.
-                String caminho ="../Arquivos/" +  assDigitalP.trim() + "/" +arquivo;//diretorio do novo arquivo
+                String caminho ="../Arquivos/" +  assDigitalP.trim();//diretorio do novo arquivo
+                File file = new File(caminho);
+                if(!file.exists())
+                    controllerPessoa.criarDiretorio(caminho);
+                caminho = caminho +  "/" + arquivo;
                 ControllerDocumento.receiveFile(caminho, cliente);//salvar arquivo
                 //verificacao do novo arquivo
-                File file = new File(caminho);
                 if(file.canRead()){
                     servidor.distribuiMensagem("Sucesso-Doc");
                     String assDocumento = assDigitalP.trim() + arquivo;
                     ControllerArquivo.escreverDocumento(caminho , assDigitalP.trim(), assDocumento);
-                } 
+                }
+                if(reenvio == 1)
+                    rede.enviarArquivos(opcao, assDigitalP , caminho);
             }  
             
             if(opcao == 2){ //cadastrar pessoa física
@@ -130,9 +142,8 @@ public class TrataCliente implements Runnable{
                 Client cliente = new Client(dados[1] ,ControllerPacotes.strToInt(dados[0], 1860));
                 String file = ControllerArquivo.buscarDoc(dados[2].trim(), dados[3].trim());
                 if(file != null)
-                    ControllerDocumento.sendFile(file, cliente.getCliente());   
-            }
-        
+                    ControllerDocumento.sendFile(file, cliente.getCliente() , null);   
+            }      
         } catch (IOException ex) {
             Logger.getLogger(Recebedor.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -6,7 +6,9 @@
 package controller;
 
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
+import serverAndClient.Client;
 
 /**
  *
@@ -35,6 +37,34 @@ public class ControllerRede {
             //saida.flush();
         }catch(Exception ex){
             System.out.println(ex.toString());
+        }
+    }
+    
+    /**
+     * Método que reenvia os arquivos para outros cartorios
+     * @param opcao 
+     * @param assP 
+     * @param caminho 
+     */
+    public void enviarArquivos(int opcao , String assP , String caminho){
+        Client cliente;
+        for(int i = 0 ; i < ControllerCartorio.quantCartorio(); i++){
+            boolean teste = true;
+            while(teste){
+                try {
+                    cliente = new Client(ControllerCartorio.busca(i).getIp(),ControllerCartorio.busca(i).getPorta());
+                    cliente.executa();
+                    enviarDadoInt(cliente.getCliente(), opcao);
+                    enviarDadoInt(cliente.getCliente(), 0);
+                    ControllerDocumento.sendFile(caminho, cliente.getCliente() , assP);
+                    cliente.fecharConexão();
+                    cliente = new Client(ControllerCartorio.busca(i).getIp(),ControllerCartorio.busca(i).getPorta());
+                    cliente.executa();
+                    teste = false;
+                } catch (IOException ex) {
+                    ex.getMessage();
+                }    
+            }
         }
     }
 }

@@ -30,10 +30,11 @@ public class ControllerDocumento {
      * Método que envia um arquivo para o cliente ao qual o servidor está conectado.
      * @param caminho
      * @param sock
+     * @param assP
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    public static void sendFile(String caminho , Socket sock) throws FileNotFoundException, IOException{
+    public static void sendFile(String caminho , Socket sock , String assP) throws FileNotFoundException, IOException{
         FileInputStream fis = null;
         OutputStream os = null;
         BufferedInputStream bis = null;
@@ -43,6 +44,10 @@ public class ControllerDocumento {
             System.out.println(caminho);
             File myFile = new File (caminho); //abri arquivo
             rede.enviarDado(sock,myFile.getName());
+            if(assP != null){
+                //envia a assinatura digital da pessoa logada para realizar a associação com o arquivo.
+                rede.enviarDado(sock , assP);
+            }
             //criar um vetor de byte do tamanho do arquivo
             byte [] mybytearray  = new byte [(int)myFile.length()]; 
             //cria um fluxo de saida dos bytes do arquivo

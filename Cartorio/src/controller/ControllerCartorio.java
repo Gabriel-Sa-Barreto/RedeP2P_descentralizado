@@ -15,20 +15,14 @@ import model.Cartorio;
  */
 public class ControllerCartorio {
     
-    private List<Cartorio> cartorios;
-    /**
-     * Construtor da classe ControllerCartorio
-     */
-    public ControllerCartorio() {
-        this.cartorios = new ArrayList<>();
-    }
-    
+    private static List<Cartorio> cartorios  = new ArrayList<>();;
+   
     /**
      * Cadastramento de um cartorio
      * @param porta porta do server
      * @param ip ip do server
      */
-    public void cadastrar(int porta , String ip){
+    public static void cadastrar(int porta , String ip){
         Cartorio cartorio;
         if(cartorios.isEmpty())
             cartorio = new Cartorio(0,porta , ip);
@@ -42,7 +36,7 @@ public class ControllerCartorio {
      * @param indice indice onde esta armazenado o cartorio
      * @return Cartorio dados de um cartorio
      */
-    public Cartorio busca(int indice){
+    public static Cartorio busca(int indice){
         return cartorios.get(indice);
     }
     
@@ -50,7 +44,7 @@ public class ControllerCartorio {
      * Metodo que informa a quantidade de cartorios
      * @return int tamanho da lista
      */
-    public int quantCartorio(){
+    public static int quantCartorio(){
         return cartorios.size();
     }
 }
