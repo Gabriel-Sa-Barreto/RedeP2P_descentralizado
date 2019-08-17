@@ -576,8 +576,7 @@ public class TelaUsuario extends javax.swing.JFrame {
                     ControllerCartorio.setLoginCartorio("");
                     //caso o login seja feito com sucesso, sai do loop while e realiza as outras ações.
                     break;
-                }
-                
+                }               
                 if(ControllerCartorio.isLoginCartorio().equals("Login-Failed")){
                     JOptionPane.showMessageDialog(null, "Não foi encontrado ninguém com esses dados. Verifique novamente!");
                     ControllerCartorio.setLoginCartorio("");
@@ -630,6 +629,7 @@ public class TelaUsuario extends javax.swing.JFrame {
             } else {
                 rede.transmitirDadosCartorio(2,control,dados);
                 while(true){
+                    System.out.println("Teste");
                     if( ControllerCartorio.getCadSuccessfully().equals("CadSucesso") ){
                         ControllerCartorio.setCadSuccessfully(new String());
                         JOptionPane.showMessageDialog(null, "Cadastro feito com sucesso!");

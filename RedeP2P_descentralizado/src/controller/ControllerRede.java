@@ -60,10 +60,12 @@ public class ControllerRede {
                 try {
                     cliente = new Client(control.busca(i).getIp(),control.busca(i).getPorta());
                     cliente.executa();
-                    enviarDadoInt(cliente.getCliente(), opcao);
+                    enviarDadoInt(cliente.getCliente(), opcao); //opcao do processamento da informacao
+                    enviarDadoInt(cliente.getCliente(), 1); //opcao de reenvio dos cartorios que estao abertos
                     enviarDado(cliente.getCliente(),dados);
                     teste = false;
                 } catch (IOException ex) {
+                    teste = false;
                     ex.getMessage();
                 }    
             }

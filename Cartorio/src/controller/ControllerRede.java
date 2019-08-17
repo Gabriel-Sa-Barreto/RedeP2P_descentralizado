@@ -30,6 +30,11 @@ public class ControllerRede {
         }
     } 
     
+    /**
+     * Método que envia ao servidor do cartório a ação que será realizada. 
+     * @param conexao
+     * @param opcao 
+     */
     public void enviarDadoInt(Socket conexao , int opcao){
         try{
             DataOutputStream saida = new DataOutputStream(conexao.getOutputStream());
@@ -67,4 +72,30 @@ public class ControllerRede {
             }
         }
     }
+    
+    /**
+     * Método para transmissão de dados ao respectivos cartórios cadastrados.
+     * @param opcao
+     * @param control
+     * @param dados 
+     */
+    public void transmitirDados(int opcao, String dados){
+        Client cliente;
+        for(int i = 0 ; i < ControllerCartorio.quantCartorio(); i++){
+            boolean teste = true;
+            while(teste){
+                try {
+                    cliente = new Client(ControllerCartorio.busca(i).getIp(),ControllerCartorio.busca(i).getPorta());
+                    cliente.executa();
+                    enviarDadoInt(cliente.getCliente(), opcao); //opcao do processamento da informacao
+                    enviarDadoInt(cliente.getCliente(), 0); //opcao de reenvio dos cartorios que estao abertos
+                    enviarDado(cliente.getCliente(),dados);
+                    teste = false;
+                } catch (IOException ex) {
+                    teste = false;
+                    ex.getMessage();
+                }    
+            }
+        } 
+    }   
 }

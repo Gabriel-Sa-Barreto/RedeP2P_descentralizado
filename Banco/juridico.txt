@@ -1,2 +1,3 @@
 Gabriel;52383329000182;biel;Alves1
 Gabriel;50773658000104;biel;Alves5
+SamLtda;53299206000120;samuel;samltda

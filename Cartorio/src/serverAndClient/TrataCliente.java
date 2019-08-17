@@ -65,7 +65,7 @@ public class TrataCliente implements Runnable{
             DataInputStream entrada = new DataInputStream(cliente);
             int opcao = entrada.readInt(); //acao a ser realizada com a informacao
             if(opcao == 1){
-                int reenvio = entrada.readInt();
+                int reenvio = entrada.readInt();    //opcao de reenvio
                 String arquivo = entrada.readUTF();     //nome do arquivo
                 String assDigitalP = entrada.readUTF(); //assinatura da pessoa para associar ao arquivo.
                 String caminho ="../Arquivos/" +  assDigitalP.trim();//diretorio do novo arquivo
@@ -85,10 +85,10 @@ public class TrataCliente implements Runnable{
             }  
             
             if(opcao == 2){ //cadastrar pessoa física
+                int reenvio = entrada.readInt(); //opcao de reenvio
+                System.out.println(reenvio);
                 String pacotePessoa = entrada.readUTF();//dados de pessoa física
                 PessoaFisica p = ControllerPacotes.repartirPacotePF(pacotePessoa);
-                System.out.println(pacotePessoa);
-                
                 if(controllerPessoa.busca_pessoaAssinatura(p.getAssinatura_digital(), 0) || controllerPessoa.busca_pessoaAssinatura(p.getAssinatura_digital(), 1)){
                     servidor.distribuiMensagem("Ass-Fail"); //cadastro de pessoa física falhou.
                 }
@@ -97,13 +97,17 @@ public class TrataCliente implements Runnable{
                 else{    
                     controllerPessoa.cadastrarPessoa_fisica(p.getNome(), p.getAssinatura_digital(), p.getCPF(), p.getSenha());
                     ControllerArquivo.escreverPessoaFisica(p);
-                    controllerPessoa.criarDiretorio("../Arquivos/"+ p.getAssinatura_digital());
+                    controllerPessoa.criarDiretorio("../Arquivos/"+ p.getAssinatura_digital());   
                     servidor.distribuiMensagem("CadSucesso"); //cadastro de pessoa física com sucesso.
+                    if(reenvio == 1){
+                        rede.transmitirDados(opcao,pacotePessoa);
+                    } 
                 }
             }
             
             if(opcao == 3) {//solicitação de login por um usuário.
-                String login = entrada.readUTF();
+                int reenvio = entrada.readInt(); //opcao de reenvio
+                String login = entrada.readUTF(); // pacote contendo as informacoes de login
                 String[] dados = login.split(";");
                 if( controllerPessoa.existePessoa(dados[0].trim(), dados[1].trim(),0) == 1 || controllerPessoa.existePessoa(dados[0], dados[1],1) == 1 ) {
                     //caso a senha e assinatura seja de uma pessoa física ou jurídica.
@@ -115,9 +119,9 @@ public class TrataCliente implements Runnable{
             
             
             if(opcao == 4){ //cadastrar pessoa jurídica
+                int reenvio = entrada.readInt(); //opcao de reenvio
                 String pacotePessoa = entrada.readUTF();//dados de pessoa jurídica
                 PessoaJuridica p = ControllerPacotes.repartirPacotePJ(pacotePessoa);
-                System.out.println(pacotePessoa);
                 if(controllerPessoa.busca_pessoaAssinatura(p.getAssinatura_digital(), 0) || controllerPessoa.busca_pessoaAssinatura(p.getAssinatura_digital(), 1)){
                     servidor.distribuiMensagem("Ass-Fail"); //cadastro de pessoa jurídica falhou.
                 }
@@ -128,15 +132,21 @@ public class TrataCliente implements Runnable{
                     ControllerArquivo.escreverPessoaJuridica(p);
                     servidor.distribuiMensagem("CadSucesso");//cadastro de pessoa jurídica com sucesso.
                 }
+                if(reenvio == 1){
+                    rede.transmitirDados(opcao,pacotePessoa);
+                    System.out.println("Foi");
+                }
             }
             
             if(opcao == 5){//recebe uma solicitação de um usuário para visualização dos seus arquivos submetidos. 
+                int reenvio = entrada.readInt(); //opcao de reenvio
                 String pacotePessoa = entrada.readUTF();//assinatura digital da pessoa que logou
                 List<Documento> docs = ControllerArquivo.leitorDocumento(pacotePessoa.trim());
                 ControllerDocumento.enviarDoc(docs,servidor);
             }
             
             if(opcao == 6){
+                int reenvio = entrada.readInt(); //opcao de reenvio
                 String pacoteRede = entrada.readUTF();//dados do cliente da pessoa que logou
                 String[] dados = pacoteRede.split(";");
                 Client cliente = new Client(dados[1] ,ControllerPacotes.strToInt(dados[0], 1860));

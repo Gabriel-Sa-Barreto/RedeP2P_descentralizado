@@ -19,8 +19,8 @@ public class Cartorio {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        Servidor server = new Servidor(1860);
-        ControllerCartorio.cadastrar(1880, "127.0.0.1");
+        Servidor server = new Servidor(1880);
+        ControllerCartorio.cadastrar(1860, "127.0.0.1");
     }
     
 }
