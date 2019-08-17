@@ -5,8 +5,12 @@
  */
 package serverAndClient;
 
+import controller.ControllerCartorio;
+import controller.ControllerDocumento;
 import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import model.Documento;
 
 /**
  *
@@ -52,8 +56,41 @@ public class Recebedor implements Runnable{
             DataInputStream entrada = new DataInputStream(this.servidor);
             try{
                 pacote = entrada.readUTF();
-                System.out.println(pacote);
-            }catch(Exception ex){
+                switch(pacote) {
+                    case "Sucesso-Login":
+                        servidor.close();
+                        setStart(false);
+                        break;
+                    case "Login-Failed":
+                        servidor.close();
+                        setStart(false);
+                        break;
+                    case "Sucesso-Doc": //mensagem de aviso do servidor ao qual informa que um registro de documento foi feito com sucesso.
+                        servidor.close();
+                        setStart(false);
+                        break;
+                    case "CadSucesso": //mensagem de aviso do servidor ao qual informa que um cadastro de pessoa física ou jurídica foi realizado com sucesso.
+                        servidor.close();
+                        setStart(false);
+                        break;
+                    case "CNPJ-Fail":    
+                        servidor.close();
+                        setStart(false);
+                        break;
+                    case "CPF-Fail":    
+                        servidor.close();
+                        setStart(false);
+                        break;
+                    case "Ass-Fail":
+                        servidor.close();
+                        setStart(false);
+                        break;
+                    case "Acabou":
+                        servidor.close();
+                        setStart(false);
+                        break;
+                }
+            }catch(IOException ex){
                 System.out.println(ex.toString());
             }
         }

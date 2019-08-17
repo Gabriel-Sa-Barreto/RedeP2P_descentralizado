@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Documento;
-import model.Pessoa;
 import model.PessoaFisica;
 import model.PessoaJuridica;
 

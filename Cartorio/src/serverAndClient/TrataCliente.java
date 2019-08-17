@@ -134,7 +134,6 @@ public class TrataCliente implements Runnable{
                 }
                 if(reenvio == 1){
                     rede.transmitirDados(opcao,pacotePessoa);
-                    System.out.println("Foi");
                 }
             }
             

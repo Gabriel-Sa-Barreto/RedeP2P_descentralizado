@@ -118,6 +118,7 @@ public class ControllerDocumento {
             Documento documento = it.next();
             servidor.distribuiMensagem(documento.toString());
         } 
+        servidor.distribuiMensagem("Acabou");
     }
     
     

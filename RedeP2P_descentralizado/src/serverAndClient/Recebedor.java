@@ -56,27 +56,45 @@ public class Recebedor implements Runnable{
             DataInputStream entrada = new DataInputStream(this.servidor);
             try{
                 pacote = entrada.readUTF();
-                System.out.println(pacote);
                 switch(pacote) {
                     case "Sucesso-Login":
                         ControllerCartorio.setLoginCartorio(pacote);
+                        servidor.close();
+                        setStart(false);
                         break;
                     case "Login-Failed":
                         ControllerCartorio.setLoginCartorio(pacote);
+                        servidor.close();
+                        setStart(false);
                         break;
                     case "Sucesso-Doc": //mensagem de aviso do servidor ao qual informa que um registro de documento foi feito com sucesso.
+                        servidor.close();
+                        setStart(false);
                         break;
                     case "CadSucesso": //mensagem de aviso do servidor ao qual informa que um cadastro de pessoa física ou jurídica foi realizado com sucesso.
                         ControllerCartorio.setCadSuccessfully(pacote.trim());
+                        servidor.close();
+                        setStart(false);
                         break;
                     case "CNPJ-Fail":    
                         ControllerCartorio.setCadSuccessfully(pacote.trim());
+                        servidor.close();
+                        setStart(false);
                         break;
                     case "CPF-Fail":    
                         ControllerCartorio.setCadSuccessfully(pacote.trim());
+                        servidor.close();
+                        setStart(false);
                         break;
                     case "Ass-Fail":
                         ControllerCartorio.setCadSuccessfully(pacote.trim());
+                        servidor.close();
+                        setStart(false);
+                        break;
+                    case "Acabou":
+                        servidor.close();
+                        setStart(false);
+                        break;
                     default:
                         //código responsável por receber a lista de documentos de uma pessoa que realizou uma solicitação.  
                         String[] docSplit = pacote.split(";");
