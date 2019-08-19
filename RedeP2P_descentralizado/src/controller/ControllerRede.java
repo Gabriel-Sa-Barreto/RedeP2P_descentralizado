@@ -52,13 +52,13 @@ public class ControllerRede {
      * @param control
      * @param dados 
      */
-    public void transmitirDadosCartorio(int opcao, ControllerCartorio control, String dados){
+    public void transmitirDadosCartorio(int opcao, ControllerCartorio control, String dados, int cartorio){
         Client cliente;
-        for(int i = 0 ; i < control.quantCartorio(); i++){
-            boolean teste = true;
-            while(teste){
+        //for(int i = 0 ; i < control.quantCartorio(); i++){
+           boolean teste = true;
+           while(teste){
                 try {
-                    cliente = new Client(control.busca(i).getIp(),control.busca(i).getPorta());
+                    cliente = new Client(control.busca(cartorio).getIp(),control.busca(cartorio).getPorta());
                     cliente.executa();
                     enviarDadoInt(cliente.getCliente(), opcao); //opcao do processamento da informacao
                     enviarDadoInt(cliente.getCliente(), 1); //opcao de reenvio dos cartorios que estao abertos
@@ -68,7 +68,7 @@ public class ControllerRede {
                     teste = false;
                     ex.getMessage();
                 }    
-            }
-        } 
+           }
+        // } 
     }   
 }

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -29,9 +30,15 @@ import serverAndClient.Servidor;
 
 /**
  *
- * @author gabriel
+ * @author Gabriel Sá e Samuel Vitorio
  */
-public class TelaUsuario extends javax.swing.JFrame {   
+public class TelaUsuario extends javax.swing.JFrame {
+    
+    /**
+     * Atributo que guarda a número do cartório que o usuário se conectou.
+     */
+    private int cartorioConectado;
+    
     /**
      * Atributo responsável pelo envio de dados.
      */
@@ -510,7 +517,17 @@ public class TelaUsuario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void logoutUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutUserActionPerformed
+        ControllerPessoa.setAssDigitalPessoaLogada(""); //apaga assinatura da pessoa que estava associada ao login do sistema.
+        ControllerDocumento.getDocs().clear(); //limpa a lista de documentos armazenados.
         JOptionPane.showMessageDialog(null, "Logout feito com sucesso!!");
+        cartorioConectado = -1;
+        //limpa os campos do login
+        ass_digitalPessoa.setText(null);
+        senhaPessoa.setText(null);
+        //volta para tela de login
+        setMenuPrincipal(false);
+        CardLayout cl = (CardLayout) telaUser.getLayout();
+        cl.show(telaUser, "telaLogin");
     }//GEN-LAST:event_logoutUserActionPerformed
 
     /**
@@ -568,7 +585,7 @@ public class TelaUsuario extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Por favor!! Informe todos os campos.");
         }else{
             //envia os dados de login.
-            rede.transmitirDadosCartorio(3,control,login);
+            rede.transmitirDadosCartorio(3,control,login, cartorioConectado);
             while(true){
                 //espera pela confirmação do login
                 if(ControllerCartorio.isLoginCartorio().equals("Sucesso-Login")){
@@ -586,7 +603,7 @@ public class TelaUsuario extends javax.swing.JFrame {
             }          
             
             //realiza a solicitação dos arquivos da pessoa para possíveis downloads.
-            rede.transmitirDadosCartorio(5, control, ass_digital);
+            rede.transmitirDadosCartorio(5, control, ass_digital, cartorioConectado);
             //armazena a assinatura digital pessoa para futuras buscas e registros.
             ControllerPessoa.setAssDigitalPessoaLogada(ass_digital); 
             this.setMenuPrincipal(true); //ativa o menu principal
@@ -627,7 +644,7 @@ public class TelaUsuario extends javax.swing.JFrame {
             if(!ValidarCPF.isCPF(cpf)){
                 JOptionPane.showMessageDialog(null, "CPF inválido. Informe os dados corretamente!");
             } else {
-                rede.transmitirDadosCartorio(2,control,dados);
+                rede.transmitirDadosCartorio(2,control,dados, cartorioConectado);
                 while(true){
                     System.out.println("Teste");
                     if( ControllerCartorio.getCadSuccessfully().equals("CadSucesso") ){
@@ -668,7 +685,7 @@ public class TelaUsuario extends javax.swing.JFrame {
             if(!ValidarCNPJ.isCNPJ(cnpj)){
                 JOptionPane.showMessageDialog(null, "CNPJ inválido. Informe os dados corretamente!");
             } else {
-                rede.transmitirDadosCartorio(4,control,dados);
+                rede.transmitirDadosCartorio(4,control,dados, cartorioConectado);
                 while(true){
                     if( ControllerCartorio.getCadSuccessfully().equals("CadSucesso") ){
                         ControllerCartorio.setCadSuccessfully(new String());
@@ -752,7 +769,7 @@ public class TelaUsuario extends javax.swing.JFrame {
                     String ipDaMaquina = InetAddress.getLocalHost().getHostAddress();
                     System.out.println(ipDaMaquina);
                     String inRede = servidor.getPorta() + ";" + ipDaMaquina + ";"+ ControllerPessoa.getAssDigitalPessoaLogada() + ";" + nomeDoc;
-                    rede.transmitirDadosCartorio(6, control , inRede);
+                    rede.transmitirDadosCartorio(6, control , inRede, cartorioConectado);
                 } catch (UnknownHostException ex) {
                     Logger.getLogger(TelaUsuario.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -771,8 +788,12 @@ public class TelaUsuario extends javax.swing.JFrame {
     }
     
     public void conectarComCartorio(){
-         control.cadastrar(1880,"127.0.0.1");
-         //control.cadastrar(1860,"127.0.0.1");
+         //control.cadastrar(1860,"10.0.0.107");//cartorio 1
+         control.cadastrar(1880,"10.0.0.106");  //cartório 2
+         control.cadastrar(1890,"10.0.0.123");  //cartório 3
+         Random escolha = new Random();
+         cartorioConectado = escolha.nextInt(1); //escolhe um cartório qualquer disponível para conexão.    
+         JOptionPane.showMessageDialog(null, "Cartório " + (cartorioConectado) + " escolhido para conexão.");
     }
     
     

@@ -71,9 +71,11 @@ public class ControllerCartorio {
 
     /**
      * Método que retorna o estado atual do atributo loginCartorio.
+     * Este método utiliza a palavra-chave synchronized, que não permite que mais de uma
+     * thread ou classe, acesse esse método ao mesmo tempo.
      * @return 
      */
-    public static String isLoginCartorio() {
+    public synchronized static String isLoginCartorio() {
         return loginCartorio;
     }
 
@@ -90,9 +92,11 @@ public class ControllerCartorio {
 
     /**
      * Método que verifica o valor atual do atributo cadSuccessfully.
+     * Este método utiliza a palavra-chave synchronized, que não permite que mais de uma
+     * thread ou classe, acesse esse método ao mesmo tempo.
      * @return 
      */
-    public static String getCadSuccessfully() {
+    public synchronized static String getCadSuccessfully() {
         return cadSuccessfully;
     }
 

@@ -5,3 +5,4 @@ Alves6;Alves6certificado_machine.pdf;../Teste/Alves6/certificado_machine.pdf
 Alves6;Alves6comprovanteMatricula.pdf;../Teste/Alves6/comprovanteMatricula.pdf
 Alves6;Alves6comprovanteMatricula.pdf;../Teste/Alves6/comprovanteMatricula.pdf
 Alves6;Alves6certificado_machine.pdf;../Arquivos/Alves6/certificado_machine.pdf
+Alves;Alvescomprovante_de_matricula_2019.1.pdf;../Arquivos/Alves/comprovante_de_matricula_2019.1.pdf
