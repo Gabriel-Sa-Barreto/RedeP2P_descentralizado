@@ -15,7 +15,7 @@ import java.net.Socket;
 
 /**
  *
- * @author lsjsa
+ * @author  Samuel Vitorio e Gabriel
  */
 public class Servidor implements Runnable{
     /**Atributo que guarda o servidor.

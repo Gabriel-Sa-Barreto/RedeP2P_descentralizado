@@ -39,11 +39,9 @@ public class ControllerDocumento {
         OutputStream os = null;
         BufferedInputStream bis = null;
         ControllerRede rede = new ControllerRede();
-        //String[] split = caminho.split("/");
         try{
-            System.out.println(caminho);
             File myFile = new File (caminho); //abri arquivo
-            rede.enviarDado(sock,myFile.getName());
+            rede.enviarDado(sock,myFile.getName()); // envia o nome do arquivo que esta sendo enviado
             if(assP != null){
                 //envia a assinatura digital da pessoa logada para realizar a associação com o arquivo.
                 rede.enviarDado(sock , assP);
@@ -52,7 +50,7 @@ public class ControllerDocumento {
             byte [] mybytearray  = new byte [(int)myFile.length()]; 
             //cria um fluxo de saida dos bytes do arquivo
             fis = new FileInputStream(myFile);
-            //buffered onde será guardado o arquivo
+            //buffered responsavel pela leitura
             bis = new BufferedInputStream(fis);
             //leitura do arquivo
             bis.read(mybytearray,0,mybytearray.length);
@@ -82,13 +80,12 @@ public class ControllerDocumento {
         FileOutputStream fos = null; // fluxo para receber os bytes do caminho
         BufferedOutputStream bos = null;//buffered onde estara salvo o caminho
         try {
-            // criacao de um buffered 
+            // criacao de um buffer
             byte [] mybytearray  = new byte [6022386];
-            //InputStream is = sock.getInputStream();
             //fluxo para receber o caminho no diretorio especificado
             fos = new FileOutputStream(caminho);
-            bos = new BufferedOutputStream(fos);
             //variavel por ler o buffer
+            bos = new BufferedOutputStream(fos);
             bytesRead = is.read(mybytearray,0,mybytearray.length);
             current = bytesRead; //bytes a serem lido no buffer
             do {
@@ -114,11 +111,12 @@ public class ControllerDocumento {
      * @throws IOException 
      */
     public static void enviarDoc(List<Documento> docs , Servidor servidor) throws IOException{
+        //anda na lista que envia todos os documentos arqmazenados para um cliente
         for (Iterator<Documento> it = docs.iterator(); it.hasNext();) {
             Documento documento = it.next();
             servidor.distribuiMensagem(documento.toString());
         } 
-        servidor.distribuiMensagem("Acabou");
+        servidor.distribuiMensagem("Acabou"); //sinalizar o fim do envio das informacoes
     }
     
     

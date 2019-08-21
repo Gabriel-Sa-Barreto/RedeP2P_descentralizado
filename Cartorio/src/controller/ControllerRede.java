@@ -59,10 +59,14 @@ public class ControllerRede {
                 try {
                     cliente = new Client(ControllerCartorio.busca(i).getIp(),ControllerCartorio.busca(i).getPorta());
                     cliente.executa();
+                    //opcao da acao a ser processado
                     enviarDadoInt(cliente.getCliente(), opcao);
+                    //envia se essa informacao a ser mandada deve ser reenviada para os outros sockets
                     enviarDadoInt(cliente.getCliente(), 0);
+                    //envia o arquivo
                     ControllerDocumento.sendFile(caminho, cliente.getCliente() , assP);
                     cliente.fecharConexão();
+                    //devido ao fechamento do socket no metodo sendFile para receber a confirmacao do salvamento deve se abrir o socket novamente
                     cliente = new Client(ControllerCartorio.busca(i).getIp(),ControllerCartorio.busca(i).getPorta());
                     cliente.executa();
                     teste = false;
@@ -89,7 +93,7 @@ public class ControllerRede {
                     cliente.executa();
                     enviarDadoInt(cliente.getCliente(), opcao); //opcao do processamento da informacao
                     enviarDadoInt(cliente.getCliente(), 0); //opcao de reenvio dos cartorios que estao abertos
-                    enviarDado(cliente.getCliente(),dados);
+                    enviarDado(cliente.getCliente(),dados); // o dado a ser processado
                     teste = false;
                 } catch (IOException ex) {
                     teste = false;

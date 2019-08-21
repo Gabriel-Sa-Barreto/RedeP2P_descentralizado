@@ -48,11 +48,14 @@ public class ControllerRede {
     
     /**
      * Método para transmissão de dados ao respectivos cartórios cadastrados.
+     * Retorna o cartório ao qual os dados foram transmitidos.
      * @param opcao
      * @param control
      * @param dados 
+     * @param cartorio 
+     * @return cartorio
      */
-    public void transmitirDadosCartorio(int opcao, ControllerCartorio control, String dados, int cartorio){
+    public int transmitirDadosCartorio(int opcao, ControllerCartorio control, String dados, int cartorio){
         Client cliente;
         //for(int i = 0 ; i < control.quantCartorio(); i++){
            boolean teste = true;
@@ -65,10 +68,15 @@ public class ControllerRede {
                     enviarDado(cliente.getCliente(),dados);
                     teste = false;
                 } catch (IOException ex) {
-                    teste = false;
-                    ex.getMessage();
+                    //parte do código que tenta se conectar com algum cartório que esteja disponível
+                    cartorio++;
+                    if(cartorio == control.quantCartorio()){ //caso chegue ao último cartório, volta ao primeiro para tentar reconexão.
+                        cartorio = 0;
+                    }
+                    //-----------------------------------------------------------------------------------------------------------------
+                    System.out.println(ex.getMessage());
                 }    
            }
-        // } 
+        return cartorio;
     }   
 }

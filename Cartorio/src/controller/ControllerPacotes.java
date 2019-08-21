@@ -14,15 +14,26 @@ import model.PessoaJuridica;
  */
 public class ControllerPacotes {
     
-    
+    /**
+     * Metodo que recebe o pacote e cria o objeto
+     * @param pacote
+     * @return 
+     */
     public static PessoaFisica repartirPacotePF(String pacote){
         String split[] = pacote.split(";");
+        //split[1] = cpf , split[0] = nome , split[3] = assinatura digital e split[4] = senha
         PessoaFisica fisica = new PessoaFisica( split[1],split[0], split[3], split[2] );
         return fisica;
     }
     
+    /**
+     * Metodo que recebe o pacote e cria o objeto
+     * @param pacote
+     * @return 
+     */
     public static PessoaJuridica repartirPacotePJ(String pacote){
         String split[] = pacote.split(";");
+        //split[1] = cnpj , split[0] = nome , split[3] = assinatura digital e split[4] = senha
         PessoaJuridica juridica = new PessoaJuridica( split[1],split[0], split[3], split[2] );
         return juridica;
     }

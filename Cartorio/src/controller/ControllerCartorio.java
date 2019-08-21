@@ -15,6 +15,9 @@ import model.Cartorio;
  */
 public class ControllerCartorio {
     
+    /**
+     * Lista que armazena a porta e ip dos cartorios vizinhos
+     */
     private static List<Cartorio> cartorios  = new ArrayList<>();;
    
     /**
@@ -25,14 +28,14 @@ public class ControllerCartorio {
     public static void cadastrar(int porta , String ip){
         Cartorio cartorio;
         if(cartorios.isEmpty())
-            cartorio = new Cartorio(0,porta , ip);
+            cartorio = new Cartorio(0,porta , ip); //criacao do objeto com o id
         else
-            cartorio = new Cartorio(cartorios.size(),porta , ip);
-        cartorios.add(cartorio);
+            cartorio = new Cartorio(cartorios.size() - 1,porta , ip); //criacao do objeto com o id
+        cartorios.add(cartorio); //adiciona na lista
     }
     
     /**
-     * Busca um cartorio
+     * Busca um cartorio por um indice determinado
      * @param indice indice onde esta armazenado o cartorio
      * @return Cartorio dados de um cartorio
      */

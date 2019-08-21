@@ -65,6 +65,10 @@ public class Documento {
         this.assinatura_Documento = assinatura_Documento;
     }
     
+    /**
+     * Metodo que cria o padrao da String que deve mostrar a informacao do objeto
+     * @return 
+     */
     @Override
     public String toString() {
         return documento + ";" + assinatura_Documento;

@@ -5,16 +5,15 @@
  */
 package serverAndClient;
 
-import controller.ControllerCartorio;
-import controller.ControllerDocumento;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import model.Documento;
+
 
 /**
  *
- * @author lsjsa
+ * @author Samuel Vitorio e Gabriel
  */
 public class Recebedor implements Runnable{
     /**
@@ -57,11 +56,13 @@ public class Recebedor implements Runnable{
             try{
                 pacote = entrada.readUTF();
                 switch(pacote) {
-                    case "Sucesso-Login":
+                    //apos a confirmacao do recebimento atraves da acao que o pacote sofreu
+                    //fecha a conexao e modifica a variavel pacote para sair do while e finalizar a thread 
+                    case "Sucesso-Login": //mensagem de aviso da confirmacao do login
                         servidor.close();
                         setStart(false);
                         break;
-                    case "Login-Failed":
+                    case "Login-Failed": //mensagem de aviso que deu erro o login
                         servidor.close();
                         setStart(false);
                         break;
@@ -73,20 +74,20 @@ public class Recebedor implements Runnable{
                         servidor.close();
                         setStart(false);
                         break;
-                    case "CNPJ-Fail":    
+                    case "CNPJ-Fail":   //mensagem informando que nao foi armazenado devido ao cnpj 
                         servidor.close();
                         setStart(false);
                         break;
-                    case "CPF-Fail":    
+                    case "CPF-Fail":    //mensagem informando que nao foi armazenado devido ao cpf 
                         servidor.close();
                         setStart(false);
                         break;
-                    case "Ass-Fail":
+                    case "Ass-Fail"://mensagem informando que nao foi armazenado devido a assinatura digital
                         servidor.close();
                         setStart(false);
                         break;
                     case "Acabou":
-                        servidor.close();
+                        servidor.close();//mensagem informando que acabou o envio das informacoes do documento
                         setStart(false);
                         break;
                 }

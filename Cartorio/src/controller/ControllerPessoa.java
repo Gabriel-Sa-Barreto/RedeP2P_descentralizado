@@ -30,10 +30,7 @@ public class ControllerPessoa {
     /**
      * Construtor que inicializa todos os atributos da classe para possíveis operações.
      */
-    //public ControllerPessoa() {
-    //    pessoasFisicas = new ArrayList<>();
-    //    pessoasJuridicas = new ArrayList<>();
-    // }
+    
     public ControllerPessoa(){}
     
     /**
@@ -45,10 +42,10 @@ public class ControllerPessoa {
      * @return  
      */
     public int cadastrarPessoa_fisica(String nome, String assinatura, String CPF, String senha){
-        //tentar cadastrar uma pessoa
+        //cria um objeto do tipo PessoaFisica
         PessoaFisica p = new PessoaFisica(CPF, nome, assinatura, senha);
+        //adiciona na lista
         pessoasFisicas.add(p);
-        //pessoasFisicas.forEach(u -> System.out.println(u.toString()));
         //caso o cadastro seja feito com sucesso
         return 1; 
     }
@@ -62,8 +59,9 @@ public class ControllerPessoa {
      * @return 
      */
     public int cadastrarPessoa_juridica(String nome, String assinatura, String cnpj, String senha){
-        //tentar cadastrar uma pessoa
+        //cria um objeto do tipo PessoaFisica
         PessoaJuridica p = new PessoaJuridica(cnpj, nome, assinatura,senha);
+        //adiciona na lista
         pessoasJuridicas.add(p);
         //caso o cadastro seja feito com sucesso.
         return 1;
@@ -80,7 +78,7 @@ public class ControllerPessoa {
             //realiza busca de pessoa
             for(Iterator<PessoaJuridica> it = pessoasJuridicas.iterator(); it.hasNext();){
                 p = it.next();
-                System.out.println("teste");
+                //compara o cnpj da atual celula com a passada como argumento
                 if(p.getCNPJ().equals(cnpj)){
                     return p;
                 }
@@ -106,6 +104,7 @@ public class ControllerPessoa {
             Iterator<PessoaFisica> it = pessoasFisicas.iterator(); 
             while ( it.hasNext() ){
                 PessoaFisica p = it.next();
+                //compara o cpf da atual celula com a passada como argumento
                 if(p.getCPF().equals(CPF)){
                    return p;
                 }
@@ -130,6 +129,7 @@ public class ControllerPessoa {
                 Iterator<PessoaFisica> it = pessoasFisicas.iterator(); 
                 while ( it.hasNext() ){
                     pf = it.next();
+                    //compara a assinatura da atual celula com a passada como argumento
                     if(pf.getAssinatura_digital().equals(assinatura)){
                        return true;
                     }
@@ -141,6 +141,7 @@ public class ControllerPessoa {
                 Iterator<PessoaJuridica> it = pessoasJuridicas.iterator(); 
                 while ( it.hasNext() ){
                     pj = it.next();
+                    //compara a assinatura da atual celula com a passada como argumento
                     if(pj.getAssinatura_digital().equals(assinatura)){
                        return true;
                     }
@@ -161,12 +162,9 @@ public class ControllerPessoa {
         try{
             if(opcao == 0){ //busca de pessoa física
                 PessoaFisica p = null;
-                System.out.println(senha);
-                System.out.println(assinatura);
                 for(Iterator<PessoaFisica> it = pessoasFisicas.iterator(); it.hasNext();){
                     p = it.next();
-                    System.out.println(p.getAssinatura_digital());
-                    System.out.println(p.getSenha());
+                    //compara a atual celula com os dados passados como argumento
                     if(p.getAssinatura_digital().equals(assinatura) && p.getSenha().equals(senha) ){
                         return 1;
                     }
@@ -177,6 +175,7 @@ public class ControllerPessoa {
                 PessoaJuridica p = null;
                 for(Iterator<PessoaJuridica> it = pessoasJuridicas.iterator(); it.hasNext();){
                     p = it.next();
+                    //compara a atual celula com os dados passados como argumento
                     if(p.getAssinatura_digital().equals(assinatura) && p.getSenha().equals(senha)){
                         return 1;
                     }
@@ -187,11 +186,19 @@ public class ControllerPessoa {
         }
         return 0;
     }
-
+    
+    /**
+     * Método que retorna a lista contendo as pessoa fisicas cadastradas
+     * @return 
+     */
     public static List<PessoaFisica> getPessoasFisicas() {
         return pessoasFisicas;
     }
     
+    /**
+     * Cria o diretorio para ser armazenado os arquivos da pessoa com base na sua assinatura digital
+     * @param diretorio 
+     */
     public void criarDiretorio(String diretorio){
         new File(diretorio).mkdir();
     }

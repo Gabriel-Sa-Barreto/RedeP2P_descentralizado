@@ -34,19 +34,35 @@ public class Cartorio {
         this.ip = ip;
         this.id = id;
     }
-
+    
+    /**
+     * Metodo que retorna o id salvo
+     * @return 
+     */
     public int getId() {
         return id;
     }
-
+    
+    /**
+     * Metodo que modifica o id
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
-
+    
+    /**
+     * Metodo que retorna a porta salvo
+     * @return 
+     */
     public int getPorta() {
         return porta;
     }
-
+    
+    /**
+     * Metodo que altera a porta
+     * @param porta 
+     */
     public void setPorta(int porta) {
         this.porta = porta;
     }
