@@ -8,6 +8,7 @@ package controller;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import model.Atualizacao;
 import serverAndClient.Client;
 
 /**
@@ -71,6 +72,9 @@ public class ControllerRede {
                     cliente.executa();
                     teste = false;
                 } catch (IOException ex) {
+                    //caso ocorra a excecao de conection refused guarda o pacote que nao foi enviado para quando tiver online possa receber
+                    Atualizacao inserir = new Atualizacao(ControllerCartorio.busca(i).getIp() , ControllerCartorio.busca(i).getPorta() , caminho , opcao);
+                    ControllerAtualizacao.add(inserir);
                     ex.getMessage();
                 }    
             }
@@ -80,7 +84,6 @@ public class ControllerRede {
     /**
      * Método para transmissão de dados ao respectivos cartórios cadastrados.
      * @param opcao
-     * @param control
      * @param dados 
      */
     public void transmitirDados(int opcao, String dados){
@@ -96,6 +99,8 @@ public class ControllerRede {
                     enviarDado(cliente.getCliente(),dados); // o dado a ser processado
                     teste = false;
                 } catch (IOException ex) {
+                    Atualizacao inserir = new Atualizacao(ControllerCartorio.busca(i).getIp() , ControllerCartorio.busca(i).getPorta() , dados , opcao);
+                    ControllerAtualizacao.add(inserir);
                     teste = false;
                     ex.getMessage();
                 }    
