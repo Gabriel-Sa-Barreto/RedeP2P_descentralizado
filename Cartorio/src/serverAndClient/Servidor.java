@@ -39,7 +39,6 @@ public class Servidor implements Runnable{
         criarConexão();
         ControllerArquivo.leitorPessoaFisica("../Banco/fisica.txt", new ControllerPessoa());
         ControllerArquivo.leitorPessoaJuridica("../Banco/juridico.txt", new ControllerPessoa());
-        //ControllerPessoa.getPessoasFisicas().forEach(u -> System.out.println(u.toString()));
         new Thread(this).start(); //executa a thread do servidor 
     }
     

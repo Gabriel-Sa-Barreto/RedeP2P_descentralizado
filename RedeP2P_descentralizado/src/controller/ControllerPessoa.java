@@ -11,6 +11,8 @@ package controller;
  */
 public class ControllerPessoa {
     
+    private static int contadorTransmissao;
+       
     /**
      * Atributo que armazena a assDigital da pessoa que está logada no sistema.
      */
@@ -31,4 +33,17 @@ public class ControllerPessoa {
     public static void setAssDigitalPessoaLogada(String assDigitalPessoaLogada) {
         ControllerPessoa.assDigitalPessoaLogada = assDigitalPessoaLogada;
     }
+
+    public static int getContadorTransmissao() {
+        return contadorTransmissao;
+    }
+
+    public static void setContadorTransmissao(int contadorTransmissao) {
+        ControllerPessoa.contadorTransmissao = contadorTransmissao;
+    }
+    
+    
+    
+    
+    
 }

@@ -594,25 +594,43 @@ public class TelaUsuario extends javax.swing.JFrame {
         if(ass_digital.isEmpty() || senha.isEmpty()){
             JOptionPane.showMessageDialog(null, "Por favor!! Informe todos os campos.");
         }else{
-            //envia os dados de login.
+            //sempre tenta o logar apartir do primeiro cartório.
+            cartorioConectado = 0;
+            //envia a primeira solicitação de login.
             cartorioConectado = rede.transmitirDadosCartorio(3,control,login, cartorioConectado);
             while(true){
-                //espera pela confirmação do login
-                if(ControllerCartorio.isLoginCartorio().equals("Sucesso-Login")){ 
-                    JOptionPane.showMessageDialog(null, "Login feito com sucesso!!");
-                    JOptionPane.showMessageDialog(null, "Conectado com cartorio " + ( cartorioConectado + 1));
-                    ControllerCartorio.setLoginCartorio("");
-                    //caso o login seja feito com sucesso, sai do loop while e realiza as outras ações.
-                    break;
-                }               
-                if(ControllerCartorio.isLoginCartorio().equals("Login-Failed")){
-                    JOptionPane.showMessageDialog(null, "Não foi encontrado ninguém com esses dados. Verifique novamente!");
-                    ControllerCartorio.setLoginCartorio("");
-                    //caso o login falhe, então simplemente sai da função e espera por uma nova solicitação.
-                    return;
-                }
+                if(cartorioConectado < control.quantCartorio()){
+                    //espera pela confirmação do login
+                    if(ControllerCartorio.isLoginCartorio().equals("Sucesso-Login")){ 
+                        JOptionPane.showMessageDialog(null, "Login feito com sucesso!!");
+                        JOptionPane.showMessageDialog(null, "Conectado com cartorio " + ( cartorioConectado + 1));
+                        ControllerCartorio.setLoginCartorio("");
+                        //caso o login seja feito com sucesso, sai do loop while e realiza as outras ações.
+                        break;
+                    }  
+                    if(ControllerCartorio.isLoginCartorio().equals("Login-Failed")){
+                        cartorioConectado++;
+                        if(cartorioConectado < ControllerCartorio.quantCartorio()){ 
+                               //tenta outro cartório.
+                                ControllerCartorio.setLoginCartorio("");
+                                cartorioConectado = rede.transmitirDadosCartorio(3,control,login, cartorioConectado);
+                                //System.out.println(cartorioConectado + ";"+ ControllerCartorio.quantCartorio() );
+                        }
+                        if(cartorioConectado == ControllerCartorio.quantCartorio()){
+                            //deu falha em todos os cartórios.
+                            ControllerCartorio.setLoginCartorio("Login-Failed"); 
+                        }  
+                    }
+                }else {
+                    cartorioConectado = 0;
+                    if(ControllerCartorio.isLoginCartorio().equals("Login-Failed")){
+                        JOptionPane.showMessageDialog(null, "Não foi encontrado ninguém com esses dados. Verifique novamente!");
+                        ControllerCartorio.setLoginCartorio("");
+                        //caso o login falhe em todos os cartórios, então simplemente sai da função e espera por uma nova solicitação.
+                        return ;
+                    }
+                }              
             }          
-            
             //realiza a solicitação dos arquivos da pessoa para possíveis downloads.
             cartorioConectado = rede.transmitirDadosCartorio(5, control, ass_digital, cartorioConectado);
             //armazena a assinatura digital pessoa para futuras buscas e registros.
@@ -620,9 +638,7 @@ public class TelaUsuario extends javax.swing.JFrame {
             this.setMenuPrincipal(true); //ativa o menu principal
             //exibi a tela inicial
             CardLayout cl = (CardLayout) telaUser.getLayout(); 
-            cl.show(telaUser, "telaInicial");
-            
-            
+            cl.show(telaUser, "telaInicial");    
         }
     }//GEN-LAST:event_buttonAcessarActionPerformed
     
@@ -812,11 +828,11 @@ public class TelaUsuario extends javax.swing.JFrame {
      * Metodo que é responsavel pela ligacao do sistema aos cartorios
      */
     public void conectarComCartorio(){
-         control.cadastrar(1880,"192.168.25.7");//cartorio 1
-         control.cadastrar(1860,"192.168.25.7");  //cartório 2
-         //control.cadastrar(1890,"10.0.0.123");  //cartório 3
+         control.cadastrar(1880,"10.0.0.123");//cartorio 1
+         //control.cadastrar(1860,"192.168.25.7");  //cartório 2
+         control.cadastrar(1890,"10.0.0.123");  //cartório 3
          Random escolha = new Random();
-         cartorioConectado = 1;//escolha.nextInt(1); //escolhe um cartório qualquer disponível para conexão.    
+         cartorioConectado = 0;//escolha.nextInt(1); //escolhe um cartório qualquer disponível para conexão.    
          JOptionPane.showMessageDialog(null, "Cartório " + (cartorioConectado) + " escolhido para conexão.");
     }
     

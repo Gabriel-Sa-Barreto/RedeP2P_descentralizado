@@ -29,7 +29,7 @@ public class ControllerCartorio {
     /**
      * Atributo que armazena a lista de cartórios existentes. 
      */
-    private List<Cartorio> cartorios;
+    private static List<Cartorio> cartorios;
     
     /**
      * Construtor da classe ControllerCartorio
@@ -65,7 +65,7 @@ public class ControllerCartorio {
      * Metodo que informa a quantidade de cartorios
      * @return int tamanho da lista
      */
-    public int quantCartorio(){
+    public static int quantCartorio(){
         return cartorios.size();
     }
 

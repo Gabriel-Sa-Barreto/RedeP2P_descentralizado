@@ -71,7 +71,7 @@ public class ControllerRede {
                     //parte do código que tenta se conectar com algum cartório que esteja disponível
                     cartorio++;
                     if(cartorio == control.quantCartorio()){ //caso chegue ao último cartório, volta ao primeiro para tentar reconexão.
-                        cartorio = 0;
+                        teste = false;
                     }
                     //-----------------------------------------------------------------------------------------------------------------
                     System.out.println(ex.getMessage());

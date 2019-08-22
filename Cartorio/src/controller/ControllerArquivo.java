@@ -81,7 +81,7 @@ public class ControllerArquivo {
              //cria o objeto com os dados da linha 
             PessoaJuridica pf = salvarPessoaJuridica(linha);
             //metodo do controllerPessoa para armazenar na lista
-            gerenciador.cadastrarPessoa_juridica(pf.getCNPJ(), pf.getNome(), pf.getAssinatura_digital(), pf.getSenha());
+            gerenciador.cadastrarPessoa_juridica(pf.getNome(), pf.getAssinatura_digital(),pf.getCNPJ(),pf.getSenha());
         }
         read.close();
     }

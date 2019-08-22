@@ -112,8 +112,10 @@ public class TrataCliente implements Runnable{
                 int reenvio = entrada.readInt(); //opcao de reenvio
                 String login = entrada.readUTF(); // pacote contendo as informacoes de login
                 String[] dados = login.split(";");
+                System.out.println(dados[0].trim());
+                System.out.println(dados[1].trim());
                 //verifica se exite um usuario com a assinatura digital e senha compativeis
-                if( controllerPessoa.existePessoa(dados[0].trim(), dados[1].trim(),0) == 1 || controllerPessoa.existePessoa(dados[0], dados[1],1) == 1 ) {
+                if( controllerPessoa.existePessoa(dados[0].trim(), dados[1].trim(),0) == 1 || controllerPessoa.existePessoa(dados[0].trim(), dados[1].trim(),1) == 1 ) {
                     //caso a senha e assinatura seja de uma pessoa física ou jurídica.
                     servidor.distribuiMensagem("Sucesso-Login");
                 }else{

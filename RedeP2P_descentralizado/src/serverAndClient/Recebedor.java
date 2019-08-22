@@ -7,6 +7,7 @@ package serverAndClient;
 
 import controller.ControllerCartorio;
 import controller.ControllerDocumento;
+import controller.ControllerPessoa;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,7 +66,7 @@ public class Recebedor implements Runnable{
                         break;
                     case "Login-Failed":
                         //coloca a variavel com valor "Login-Failed" para informar o acesso negado ao sistema
-                        ControllerCartorio.setLoginCartorio(pacote);
+                        ControllerCartorio.setLoginCartorio(pacote);     
                         servidor.close();//fecha o socket
                         setStart(false);
                         break;

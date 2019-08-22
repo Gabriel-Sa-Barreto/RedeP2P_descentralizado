@@ -180,6 +180,7 @@ public class ControllerPessoa {
                         return 1;
                     }
                 } 
+                System.out.println("sai do for");
             }
         }catch(Exception e){
             return 0;
@@ -188,11 +189,19 @@ public class ControllerPessoa {
     }
     
     /**
-     * Método que retorna a lista contendo as pessoa fisicas cadastradas
+     * Método que retorna a lista contendo as pessoas fisicas cadastradas
      * @return 
      */
     public static List<PessoaFisica> getPessoasFisicas() {
         return pessoasFisicas;
+    }
+    
+    /**
+     * Método que retorna a lista contendo as pessoas jurídicas cadastradas
+     * @return 
+     */
+    public static List<PessoaJuridica> getPessoasJuridica() {
+        return pessoasJuridicas;
     }
     
     /**
