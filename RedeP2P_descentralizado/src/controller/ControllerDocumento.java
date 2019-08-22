@@ -40,6 +40,13 @@ public class ControllerDocumento {
      */
     private static String nomeDocToSave;
     
+    /**
+     * Método que envia um arquivo para o cliente ao qual o servidor está conectado.
+     * @param caminho
+     * @param sock
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public static void sendFile(String caminho , Socket sock) throws FileNotFoundException, IOException{
         FileInputStream fis = null;
         OutputStream os = null;
@@ -55,7 +62,7 @@ public class ControllerDocumento {
             byte [] mybytearray  = new byte [(int)myFile.length()]; 
             //cria um fluxo de saida dos bytes do arquivo
             fis = new FileInputStream(myFile);
-            //buffered onde será guardado o arquivo
+             //buffered responsavel pela leitura
             bis = new BufferedInputStream(fis);
             //leitura do arquivo
             bis.read(mybytearray,0,mybytearray.length);
@@ -73,6 +80,12 @@ public class ControllerDocumento {
         }
     }
     
+    /**
+     * Método responsável por receber o arquivo envio por um usuário.
+     * @param caminho
+     * @param is
+     * @throws IOException 
+     */
     public static void receiveFile(String caminho , InputStream is) throws IOException{
         int bytesRead;
         int current = 0;
@@ -81,9 +94,9 @@ public class ControllerDocumento {
         try {
             // criacao de um buffered 
             byte [] mybytearray  = new byte [6022386];
-            //InputStream is = sock.getInputStream();
             //fluxo para receber o caminho no diretorio especificado
             fos = new FileOutputStream(caminho);
+            //variavel para ler o buffer
             bos = new BufferedOutputStream(fos);
             //variavel por ler o buffer
             bytesRead = is.read(mybytearray,0,mybytearray.length);
@@ -107,13 +120,6 @@ public class ControllerDocumento {
         ControllerDocumento.setPathToSaveFile("");
     }
     
-    
-    public String buscarDocumento(){
-    
-    
-        return null;
-    }
-
     /**
      * Método que retorna a lista de documentos.
      * @return 
@@ -161,17 +167,4 @@ public class ControllerDocumento {
     public static void setNomeDocToSave(String nomeDocToSave) {
         ControllerDocumento.nomeDocToSave = nomeDocToSave;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

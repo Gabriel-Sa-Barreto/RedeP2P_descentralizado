@@ -13,7 +13,7 @@ import java.net.Socket;
 
 /**
  *
- * @author lsjsa
+ * @author Gabriel Sá e Samuel Vitorio
  */
 public class Servidor implements Runnable{
     /**Atributo que guarda o servidor.
@@ -45,7 +45,11 @@ public class Servidor implements Runnable{
         servidor = new ServerSocket(this.porta);
         System.out.println("Porta 12345 aberta!");    
     }
-
+    
+    /**
+     * Metodo que informa a porta do servidor
+     * @return 
+     */
     public int getPorta() {
         return porta;
     }

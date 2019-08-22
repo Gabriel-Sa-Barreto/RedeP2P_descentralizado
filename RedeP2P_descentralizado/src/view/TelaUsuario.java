@@ -44,8 +44,14 @@ public class TelaUsuario extends javax.swing.JFrame {
      */
     private ControllerRede rede;
     
+    /**
+     * Atributo que é resposavel pela acoes de rede do programa
+     */
     private ControllerCartorio control=  new ControllerCartorio();
     
+    /**
+     * Atributo que é o servidor do sistema
+     */
     private Servidor servidor; //servidor do cliente
     
     /**
@@ -553,6 +559,7 @@ public class TelaUsuario extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Nenhum documento submetido.");
         }else{
             for (Iterator<Documento> it = ControllerDocumento.getDocs().iterator(); it.hasNext();) {
+                //mostra os dados dos documentos
                 Documento doc = it.next();
                 Object[] dados = {doc.getDocumento(), doc.getAssinatura_Documento()};
                 mostrarDocs.addRow(dados); //adiciona nova linha na tabela de documentos para download.
@@ -566,7 +573,7 @@ public class TelaUsuario extends javax.swing.JFrame {
      */
     private void OpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenFileActionPerformed
         JFileChooser  fc = new JFileChooser();
-        FileFilter filter = new FileNameExtensionFilter("files", "pdf", "txt", "png");
+        FileFilter filter = new FileNameExtensionFilter("files", "pdf", "txt", "png"); //arquivos aceitos pelo sistema
         fc.setFileFilter(filter);
         fc.setCurrentDirectory(new java.io.File("../"));
         fc.setDialogTitle("Choose a file");
@@ -575,11 +582,15 @@ public class TelaUsuario extends javax.swing.JFrame {
             chooseFile.setText( fc.getSelectedFile().getAbsolutePath() );
         }
     }//GEN-LAST:event_OpenFileActionPerformed
-
+    
+    /**
+     * Metodo responsavel pela acao do evento do botao de acesso ao sistema (login)
+     * @param evt 
+     */
     private void buttonAcessarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAcessarActionPerformed
-        String ass_digital = ass_digitalPessoa.getText();
+        String ass_digital = ass_digitalPessoa.getText(); //assinatura digital da pessoa com interesse em usar o sistema
         String senha = new String ( senhaPessoa.getPassword() ).trim(); //retira possíveis espaços incluidos no campo senha
-        String login = ass_digital + ';' + senha;  
+        String login = ass_digital + ';' + senha;  //padrao do pacote sobre o login
         if(ass_digital.isEmpty() || senha.isEmpty()){
             JOptionPane.showMessageDialog(null, "Por favor!! Informe todos os campos.");
         }else{
@@ -587,7 +598,7 @@ public class TelaUsuario extends javax.swing.JFrame {
             cartorioConectado = rede.transmitirDadosCartorio(3,control,login, cartorioConectado);
             while(true){
                 //espera pela confirmação do login
-                if(ControllerCartorio.isLoginCartorio().equals("Sucesso-Login")){
+                if(ControllerCartorio.isLoginCartorio().equals("Sucesso-Login")){ 
                     JOptionPane.showMessageDialog(null, "Login feito com sucesso!!");
                     JOptionPane.showMessageDialog(null, "Conectado com cartorio " + ( cartorioConectado + 1));
                     ControllerCartorio.setLoginCartorio("");
@@ -614,7 +625,11 @@ public class TelaUsuario extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_buttonAcessarActionPerformed
-
+    
+    /**
+     * Metodo que é responsavel pela tela de cadastro
+     * @param evt 
+     */
     private void telaCadastroPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telaCadastroPessoaActionPerformed
         //Limpa todos os campos de textos da tela.
         nomePessoa.setText(null);
@@ -672,7 +687,7 @@ public class TelaUsuario extends javax.swing.JFrame {
      * @param evt 
      */
     private void cadPessoaJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadPessoaJuridicaActionPerformed
-         //Dados de nome, cpf e assinatura Digital de uma pessoa física.
+         //Dados de nome, cnpj e assinatura Digital de uma pessoa física.
         String nome = nomePessoa.getText();
         String cnpj  = cnpjPessoa.getText();
         String assDigitalP = assDigital.getText();
@@ -681,7 +696,7 @@ public class TelaUsuario extends javax.swing.JFrame {
         if(nome.isEmpty() || cnpj.isEmpty() || assDigitalP.isEmpty() || senhaP.isEmpty() ){
             JOptionPane.showMessageDialog(null, "Informe todos dados necessários");
         }else{
-            //Verifica se o CPF é válido.
+            //Verifica se o CPNJ é válido.
             if(!ValidarCNPJ.isCNPJ(cnpj)){
                 JOptionPane.showMessageDialog(null, "CNPJ inválido. Informe os dados corretamente!");
             } else {
@@ -793,6 +808,9 @@ public class TelaUsuario extends javax.swing.JFrame {
         menuPrincipal.setVisible(option);
     }
     
+    /**
+     * Metodo que é responsavel pela ligacao do sistema aos cartorios
+     */
     public void conectarComCartorio(){
          control.cadastrar(1880,"192.168.25.7");//cartorio 1
          control.cadastrar(1860,"192.168.25.7");  //cartório 2

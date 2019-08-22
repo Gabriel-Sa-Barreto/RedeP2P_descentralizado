@@ -14,7 +14,7 @@ import model.Documento;
 
 /**
  *
- * @author lsjsa
+ * @author Gabriel Sá e Samuel Vitorio
  */
 public class Recebedor implements Runnable{
     /**
@@ -57,42 +57,48 @@ public class Recebedor implements Runnable{
             try{
                 pacote = entrada.readUTF();
                 switch(pacote) {
-                    case "Sucesso-Login":
-                        ControllerCartorio.setLoginCartorio(pacote);
-                        servidor.close();
+                    case "Sucesso-Login": //mensegm de confirmacao do login
+                        //coloca a variavel com valor "Sucesso-Login" para permitir acesso no sistema
+                        ControllerCartorio.setLoginCartorio(pacote); 
+                        servidor.close(); //fecha o socket
                         setStart(false);
                         break;
                     case "Login-Failed":
+                        //coloca a variavel com valor "Login-Failed" para informar o acesso negado ao sistema
                         ControllerCartorio.setLoginCartorio(pacote);
-                        servidor.close();
+                        servidor.close();//fecha o socket
                         setStart(false);
                         break;
                     case "Sucesso-Doc": //mensagem de aviso do servidor ao qual informa que um registro de documento foi feito com sucesso.
-                        servidor.close();
+                        servidor.close();//fecha o socket
                         setStart(false);
                         break;
                     case "CadSucesso": //mensagem de aviso do servidor ao qual informa que um cadastro de pessoa física ou jurídica foi realizado com sucesso.
                         ControllerCartorio.setCadSuccessfully(pacote.trim());
-                        servidor.close();
+                        servidor.close();//fecha o socket
                         setStart(false);
                         break;
-                    case "CNPJ-Fail":    
+                    case "CNPJ-Fail":
+                        //mensagem de aviso do servidor ao qual informa que um cadastro de pessoa jurídica não foi realizado devido ao CNPJ invalido informado.
                         ControllerCartorio.setCadSuccessfully(pacote.trim());
-                        servidor.close();
+                        servidor.close();//fecha o socket
                         setStart(false);
                         break;
                     case "CPF-Fail":    
+                        //mensagem de aviso do servidor ao qual informa que um cadastro de pessoa fisica não foi realizado devido ao CPF invalido informado.
                         ControllerCartorio.setCadSuccessfully(pacote.trim());
-                        servidor.close();
+                        servidor.close(); //fecha o socket
                         setStart(false);
                         break;
                     case "Ass-Fail":
+                        //mensagem de aviso do servidor ao qual informa que um cadastro de pessoa fisica ou juridica não foi realizado devido a assinatura invalido informado.
                         ControllerCartorio.setCadSuccessfully(pacote.trim());
-                        servidor.close();
+                        servidor.close(); //fecha o scoket
                         setStart(false);
                         break;
                     case "Acabou":
-                        servidor.close();
+                        //mensagem que informa o fim da transmissao das informacoes dos documentos
+                        servidor.close(); //fecha o socket
                         setStart(false);
                         break;
                     default:

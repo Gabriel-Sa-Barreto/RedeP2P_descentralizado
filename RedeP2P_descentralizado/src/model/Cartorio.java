@@ -7,7 +7,7 @@ package model;
 
 /**
  *
- * @author lsjsa
+ * @author Gabriel Sá e Samuel Vitorio
  */
 public class Cartorio {
     /**
@@ -34,27 +34,51 @@ public class Cartorio {
         this.ip = ip;
         this.id = id;
     }
-
+    
+    /**
+     * Metodo que retorna o id salvo
+     * @return 
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Metodo que modifica o id
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Metodo que retorna a porta que foi salvo
+     * @return 
+     */
     public int getPorta() {
         return porta;
     }
 
+    /**
+     * Metodo que altera a porta
+     * @param porta 
+     */
     public void setPorta(int porta) {
         this.porta = porta;
     }
-
+    
+    /**
+     * Metodo que retorna o ip
+     * @return 
+     */
     public String getIp() {
         return ip;
     }
 
+    /**
+     * Metodo que retorna o ip
+     * @param ip 
+     */
     public void setIp(String ip) {
         this.ip = ip;
     }

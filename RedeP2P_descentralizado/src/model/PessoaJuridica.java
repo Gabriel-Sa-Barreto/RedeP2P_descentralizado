@@ -5,11 +5,9 @@
  */
 package model;
 
-import java.util.Objects;
-
 /**
  *
- * @author gabriel e Samuel
+ * @author Gabriel Sá e Samuel Vitorio
  */
 public class PessoaJuridica extends Pessoa{
     

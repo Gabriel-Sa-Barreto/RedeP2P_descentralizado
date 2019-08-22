@@ -7,7 +7,7 @@ package model;
 
 /**
  *
- * @author gabriel
+ * @author Gabriel Sá e Samuel Vitorio
  */
 public class Documento {
     

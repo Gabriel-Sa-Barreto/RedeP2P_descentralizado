@@ -52,7 +52,7 @@ public class Cartorio {
     }
     
     /**
-     * Metodo que retorna a porta salvo
+     * Metodo que retorna a porta que foi salvo
      * @return 
      */
     public int getPorta() {
@@ -66,11 +66,19 @@ public class Cartorio {
     public void setPorta(int porta) {
         this.porta = porta;
     }
-
+    
+     /**
+     * Metodo que retorna o ip
+     * @return 
+     */
     public String getIp() {
         return ip;
     }
 
+    /**
+     * Metodo que retorna o ip
+     * @param ip 
+     */
     public void setIp(String ip) {
         this.ip = ip;
     }

@@ -84,7 +84,7 @@ public class ControllerDocumento {
             byte [] mybytearray  = new byte [6022386];
             //fluxo para receber o caminho no diretorio especificado
             fos = new FileOutputStream(caminho);
-            //variavel por ler o buffer
+            //variavel para ler o buffer
             bos = new BufferedOutputStream(fos);
             bytesRead = is.read(mybytearray,0,mybytearray.length);
             current = bytesRead; //bytes a serem lido no buffer

@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 
 /**
  *
- * @author lsjsa
+ * @author gabriel Sá e Samuel Vitorio
  */
 public class Client {
     /**Atributo responsável por guardar o ip da máquina que o cliente irá se conectar.

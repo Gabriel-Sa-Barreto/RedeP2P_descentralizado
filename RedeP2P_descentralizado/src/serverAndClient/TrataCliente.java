@@ -6,8 +6,6 @@
 package serverAndClient;
 
 import controller.ControllerDocumento;
-import java.io.DataInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
@@ -41,6 +39,7 @@ public class TrataCliente implements Runnable{
     @Override
     public void run() {
         try {
+            //receber o arquivo do cartorio
             ControllerDocumento.receiveFile(ControllerDocumento.getPathToSaveFile() + "/" + ControllerDocumento.getNomeDocToSave(), cliente);//salvar arquivo
         } catch (IOException ex) {
             Logger.getLogger(Recebedor.class.getName()).log(Level.SEVERE, null, ex);

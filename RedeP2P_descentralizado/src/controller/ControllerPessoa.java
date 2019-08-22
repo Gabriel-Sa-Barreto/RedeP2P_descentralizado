@@ -5,12 +5,6 @@
  */
 package controller;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import model.PessoaFisica;
-import model.PessoaJuridica;
-
 /**
  *
  * @author Samuel Vitorio e Gabriel Sá
