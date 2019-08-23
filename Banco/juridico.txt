@@ -4,3 +4,10 @@ SamLtda;53299206000120;samuel;samltda
 SaLtda;00679871000183;teste;saltda
 RafaLtda;62957809000163;teste;rafaltda
 Thiago;01359598000172;teste;thiago
+Ellen;04726926000110;teste;ellen
+Lucas;45024852000157;teste;lucas
+Bruno;36060764000110;teste;bruno
+Vitoria;69081964000108;teste;vitoria
+disney;83938562000108;teste;disney
+TioFran;97057591000175;teste;fran
+Sanca;11786114000125;teste;sanca

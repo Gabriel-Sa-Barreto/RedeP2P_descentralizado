@@ -662,6 +662,7 @@ public class TelaUsuario extends javax.swing.JFrame {
      * @param evt 
      */
     private void cadPessoaFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadPessoaFisicaActionPerformed
+        cartorioConectado = 0;
         //Dados de nome, cpf e assinatura Digital de uma pessoa física.
         String nome = nomePessoa.getText();
         String cpf  = CpfPessoa.getText();
@@ -676,6 +677,10 @@ public class TelaUsuario extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "CPF inválido. Informe os dados corretamente!");
             } else {
                 cartorioConectado = rede.transmitirDadosCartorio(2,control,dados, cartorioConectado);
+                if(cartorioConectado == control.quantCartorio()){ //caso chegue ao último cartório, volta ao primeiro para tentar reconexão.
+                    JOptionPane.showMessageDialog(null, "Nenhum cartório disponível!");
+                    return;
+                }
                 while(true){
                     System.out.println("Teste");
                     if( ControllerCartorio.getCadSuccessfully().equals("CadSucesso") ){
@@ -703,7 +708,8 @@ public class TelaUsuario extends javax.swing.JFrame {
      * @param evt 
      */
     private void cadPessoaJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadPessoaJuridicaActionPerformed
-         //Dados de nome, cnpj e assinatura Digital de uma pessoa física.
+        cartorioConectado = 0;
+        //Dados de nome, cnpj e assinatura Digital de uma pessoa física.
         String nome = nomePessoa.getText();
         String cnpj  = cnpjPessoa.getText();
         String assDigitalP = assDigital.getText();
@@ -717,6 +723,11 @@ public class TelaUsuario extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "CNPJ inválido. Informe os dados corretamente!");
             } else {
                 cartorioConectado = rede.transmitirDadosCartorio(4,control,dados, cartorioConectado);
+                System.out.println("teste1");
+                if(cartorioConectado == control.quantCartorio()){ //caso chegue ao último cartório, volta ao primeiro para tentar reconexão.
+                    JOptionPane.showMessageDialog(null, "Nenhum cartório disponível!");
+                    return;
+                }
                 while(true){
                     if( ControllerCartorio.getCadSuccessfully().equals("CadSucesso") ){
                         ControllerCartorio.setCadSuccessfully(new String());
@@ -752,6 +763,7 @@ public class TelaUsuario extends javax.swing.JFrame {
      * @param evt 
      */
     private void uploadFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadFileActionPerformed
+        cartorioConectado = 0;
         Client cliente;
         //for(int i = 0 ; i < control.quantCartorio() ; i++){
             boolean teste = true;
@@ -770,6 +782,8 @@ public class TelaUsuario extends javax.swing.JFrame {
                     //parte do código que tenta se conectar com algum cartório que esteja disponível
                     cartorioConectado++;
                     if(cartorioConectado == control.quantCartorio()){ //caso chegue ao último cartório, volta ao primeiro para tentar reconexão.
+                        JOptionPane.showMessageDialog(null, "Nenhum cartório disponível!");
+                        teste = false;
                         cartorioConectado = 0;
                     }
                     //-----------------------------------------------------------------------------------------------------------------
@@ -784,6 +798,7 @@ public class TelaUsuario extends javax.swing.JFrame {
      * @param evt 
      */
     private void downloadDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadDocActionPerformed
+        cartorioConectado = 0;
         //abre janela para escolha da pasta onde o arquivo será armazenado.
         JFileChooser  fc = new JFileChooser();
         FileFilter filter = new FileNameExtensionFilter("files","pdf", "txt", "png");
@@ -807,6 +822,10 @@ public class TelaUsuario extends javax.swing.JFrame {
                     System.out.println(ipDaMaquina);
                     String inRede = servidor.getPorta() + ";" + ipDaMaquina + ";"+ ControllerPessoa.getAssDigitalPessoaLogada() + ";" + nomeDoc;
                     cartorioConectado = rede.transmitirDadosCartorio(6, control , inRede, cartorioConectado);
+                    if(cartorioConectado == control.quantCartorio()){ //caso chegue ao último cartório, volta ao primeiro para tentar reconexão.
+                        JOptionPane.showMessageDialog(null, "Nenhum cartório disponível!");
+                        return;
+                    }
                 } catch (UnknownHostException ex) {
                     Logger.getLogger(TelaUsuario.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -21,10 +21,16 @@ public class ControllerAtualizacao {
     private static List<Atualizacao> lista = new ArrayList<>();
     
     /**
+     * Atributo que permite realizar atualizações para outros cartórios ou não.
+     */
+    private static int permiteAtualizacao = 0;
+    
+    
+    /**
      * Metodo que adiciona na lista
      * @param atualizacao 
      */
-    public static void add(Atualizacao atualizacao){
+    public synchronized static void add(Atualizacao atualizacao){
         lista.add(atualizacao);
     }
     
@@ -33,7 +39,7 @@ public class ControllerAtualizacao {
      * @param indice 
      * @return  
      */
-    public static Atualizacao remove(int indice){  
+    public synchronized static Atualizacao remove(int indice){  
         return lista.remove(indice);
     }
     
@@ -41,7 +47,31 @@ public class ControllerAtualizacao {
      * Metodo que pega a primeira celula da lista
      * @return 
      */
-    public static Atualizacao primeiroDaLista(){
+    public synchronized static Atualizacao primeiroDaLista(){
         return lista.get(0);
     }
+    
+    /**
+     * Método que retorna se a lista está vazia ou não.
+     * @return 
+     */
+    public synchronized static boolean isEmpty(){
+        return lista.isEmpty();
+    }
+
+    /**
+     * Método que retorna o status da permissão de atualização.
+     * @return 
+     */
+    public synchronized static int getPermiteAtualizacao() {
+        return permiteAtualizacao;
+    }
+
+    /**
+     * Método que configura o status de permissão das atualizações.
+     * @param permiteAtualizacao 
+     */
+    public synchronized static void setPermiteAtualizacao(int permiteAtualizacao) {
+        ControllerAtualizacao.permiteAtualizacao = permiteAtualizacao;
+    }    
 }

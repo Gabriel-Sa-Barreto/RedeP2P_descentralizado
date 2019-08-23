@@ -31,6 +31,12 @@ public class Atualizacao {
     private int opcao;
     
     /**
+     * Atributo que guarda a assinatura digital da pessoa que tentou enviar o pacote.
+     */
+    private String ass;
+    
+    
+    /**
      * Metodo construtor da model Atualizacao
      * @param ip
      * @param porta
@@ -42,6 +48,22 @@ public class Atualizacao {
         this.pacote = pacote;
         this.opcao = opcao;
     }
+    
+    /**
+     * Metodo construtor da model Atualizacao
+     * @param ip
+     * @param porta
+     * @param pacote 
+     */
+    public Atualizacao(String ip, int porta, String pacote, int opcao, String ass) {
+        this.ip = ip;
+        this.porta = porta;
+        this.pacote = pacote;
+        this.opcao = opcao;
+        this.ass = ass;
+    }
+    
+    
     
     /**
      * Metodo que retorna o ip
@@ -74,6 +96,12 @@ public class Atualizacao {
     public int getOpcao() {
         return opcao;
     }
-    
-    
+
+    /**
+     * Método que retorna a assinatura digital da pessoa que tentou enviar o pacote.
+     * @return 
+     */
+    public String getAss() {
+        return ass;
+    }    
 }
