@@ -25,7 +25,6 @@ public class ControllerAtualizacao {
      */
     private static int permiteAtualizacao = 0;
     
-    
     /**
      * Metodo que adiciona na lista
      * @param atualizacao 
@@ -74,4 +73,5 @@ public class ControllerAtualizacao {
     public synchronized static void setPermiteAtualizacao(int permiteAtualizacao) {
         ControllerAtualizacao.permiteAtualizacao = permiteAtualizacao;
     }    
+
 }

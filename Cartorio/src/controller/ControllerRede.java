@@ -83,6 +83,7 @@ public class ControllerRede {
                     //caso ocorra a excecao de conection refused guarda o pacote que nao foi enviado para quando tiver online possa receber
                     Atualizacao inserir = new Atualizacao(ControllerCartorio.busca(i).getIp() , ControllerCartorio.busca(i).getPorta() , caminho , opcao, assP);
                     ControllerAtualizacao.add(inserir);
+                    teste = false;
                     ex.getMessage();
                 }    
             }
