@@ -89,7 +89,5 @@ public class Servidor implements Runnable{
         // envia msg a todos os clientes conectados
             DataOutputStream saida = new DataOutputStream(cartorio);
             saida.writeUTF(msg);
-            System.out.println("Entrou");
-            //saida.close();
     }
 }

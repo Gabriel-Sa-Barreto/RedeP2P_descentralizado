@@ -1,6 +1,0 @@
-Gabriel;52383329000182;biel;Alves1
-Gabriel;50773658000104;biel;Alves5
-SamLtda;53299206000120;samuel;samltda
-SaLtda;00679871000183;teste;saltda
-RafaLtda;62957809000163;teste;rafaltda
-Thiago;01359598000172;teste;thiago

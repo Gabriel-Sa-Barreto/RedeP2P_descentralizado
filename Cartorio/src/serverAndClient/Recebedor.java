@@ -6,6 +6,7 @@
 package serverAndClient;
 
 
+import controller.ControllerAtualizacao;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;

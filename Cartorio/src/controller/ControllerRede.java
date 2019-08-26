@@ -8,6 +8,8 @@ package controller;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import model.AtualizaCartorio;
+import model.Atualizacao;
 import serverAndClient.Client;
 
 /**
@@ -52,6 +54,9 @@ public class ControllerRede {
      * @param caminho 
      */
     public void enviarArquivos(int opcao , String assP , String caminho){
+        //retira permissão de atualização dos cartórios.
+        ControllerAtualizacao.setPermiteAtualizacao(0);
+        
         Client cliente;
         for(int i = 0 ; i < ControllerCartorio.quantCartorio(); i++){
             boolean teste = true;
@@ -71,19 +76,34 @@ public class ControllerRede {
                     cliente.executa();
                     teste = false;
                 } catch (IOException ex) {
+                    if(ControllerAtualizacao.isEmpty()){ 
+                        //caso der falha em um envio de pacote e a lista de reenvio estiver vazia, inicia a thread de atualização.
+                        AtualizaCartorio atualizacoes = new AtualizaCartorio();
+                    }                 
+                    //caso ocorra a excecao de conection refused guarda o pacote que nao foi enviado para quando tiver online possa receber
+                    Atualizacao inserir = new Atualizacao(ControllerCartorio.busca(i).getIp() , ControllerCartorio.busca(i).getPorta() , caminho , opcao, assP);
+                    ControllerAtualizacao.add(inserir);
+                    teste = false;
                     ex.getMessage();
                 }    
             }
         }
+        //depois de enviado (realizado uma tentativa) o arquivo para todos os cartórios,
+        //é dado permissão para a thread de atualização poder verificar se algum cartório deu falha
+        //caso sim, a thread tenta reenvia-lo periodicamente quando dado permissão.
+        ControllerAtualizacao.setPermiteAtualizacao(1);
+        
+        
     }
     
     /**
      * Método para transmissão de dados ao respectivos cartórios cadastrados.
      * @param opcao
-     * @param control
      * @param dados 
      */
     public void transmitirDados(int opcao, String dados){
+        //retira permissão de atualização dos cartórios.
+        ControllerAtualizacao.setPermiteAtualizacao(0);
         Client cliente;
         for(int i = 0 ; i < ControllerCartorio.quantCartorio(); i++){
             boolean teste = true;
@@ -96,10 +116,21 @@ public class ControllerRede {
                     enviarDado(cliente.getCliente(),dados); // o dado a ser processado
                     teste = false;
                 } catch (IOException ex) {
+                    if(ControllerAtualizacao.isEmpty()){ 
+                        //caso der falha em um envio de pacote e a lista de reenvio estiver vazia, inicia a thread de atualização.
+                        AtualizaCartorio atualizacoes = new AtualizaCartorio();
+                    }
+                    //caso ocorra a excecao de conection refused guarda o pacote que nao foi enviado para quando tiver online possa receber
+                    Atualizacao inserir = new Atualizacao(ControllerCartorio.busca(i).getIp() , ControllerCartorio.busca(i).getPorta() , dados , opcao);
+                    ControllerAtualizacao.add(inserir);
                     teste = false;
                     ex.getMessage();
                 }    
             }
         } 
+        //depois de enviados(realizado uma tentativa) os pacotes para todos os cartórios,
+        //é dado permissão para a thread de atualização poder verificar se algum pacote deu falha
+        //caso sim, a thread tenta reenvia-los periodicamente quando dado permissão.
+        ControllerAtualizacao.setPermiteAtualizacao(1);
     }   
 }
